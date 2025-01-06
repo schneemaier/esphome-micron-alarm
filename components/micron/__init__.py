@@ -113,7 +113,7 @@ CONFIG_SCHEMA = cv.All(
                 device_class = DEVICE_CLASS_OCCUPANCY,
                 entity_category=ENTITY_CATEGORY_DIAGNOSTIC,
             ),
-            cv.Optional(CONF_ZONE_6): binary_sensor.binary_sensor_schema(
+            cv.Optional(CONF_ZONE_7): binary_sensor.binary_sensor_schema(
                 device_class = DEVICE_CLASS_OCCUPANCY,
                 entity_category=ENTITY_CATEGORY_DIAGNOSTIC,
             ),
