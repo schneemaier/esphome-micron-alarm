@@ -126,7 +126,7 @@ namespace esphome
 
       if ((now_us - arg->last_interrupt_us_) < MICRON_MIN_US) {
         // too shorter delay between interrupts.
-        // this is caused by us sending command back to the panel, 
+        // this is caused by us sending command back to the panel,
         // which seems to cause and issue on the clock line
         return;
       }
@@ -143,7 +143,7 @@ namespace esphome
 
       arg->bits_received++;
       arg->packet_bits++;
-      
+
       if (arg->processor_.decode(now_ms, data_bit)) {
         arg->last_packet_ms = now_ms;
         arg->packets_received++;
@@ -174,7 +174,7 @@ namespace esphome
       for (const auto command : commands)
       {
           this->write(command);
-      }      
+      }
     }
 
     void MicronComponent::press(const std::string &keys) {
@@ -187,7 +187,7 @@ namespace esphome
       ESP_LOGCONFIG(TAG, "Setting up Micron...");
 
       this->store_.setup(this->pin_clock_, this->pin_data_, this->pin_data_out_);
-      
+
       // this->pin_clock_->attach_interrupt(MicronStore::gpio_intr, &this->store_, gpio::INTERRUPT_ANY_EDGE);
     }
 
@@ -208,7 +208,7 @@ namespace esphome
       bool is_connected = (millis() - this->store_.last_packet_ms) < MICRON_CLOCK_TIMEOUT_MS;
       if (!is_connected) {
         this->store_.status = 0x00;
-      }      
+      }
       if (this->m_binary_sensor_) {
         this->m_binary_sensor_->publish_state((this->store_.status & MICRON_M_MASK) == MICRON_M_MASK);
       }
@@ -244,7 +244,10 @@ namespace esphome
       if (this->zone5_binary_sensor_) {
         this->zone5_binary_sensor_->publish_state((this->store_.status & MICRON_ZONE_5_MASK) == MICRON_ZONE_5_MASK);
       }
-      
+      if (this->zone7_binary_sensor_) {
+        this->zone7_binary_sensor_->publish_state((this->store_.status & MICRON_ZONE_7_MASK) == MICRON_ZONE_7_MASK);
+      }
+
       if (this->keypad_text_sensor_ && this->command_dedupe_.next(this->store_.command) && this->store_.command != 0x00) {
         this->keypad_text_sensor_->publish_state(str_sprintf("0x%02x", this->store_.command));
       }
@@ -255,15 +258,31 @@ namespace esphome
         this->connected_binary_sensor_->publish_state(is_connected);
       }
 
+      if (this->test1_binary_sensor_) {
+        this->test1_binary_sensor_->publish_state((this->store_.status & MICRON_0020_MASK) == MICRON_0020_MASK);
+      }
+      if (this->test2_binary_sensor_) {
+        this->test2_binary_sensor_->publish_state((this->store_.status & MICRON_0200_MASK) == MICRON_0200_MASK);
+      }
+      if (this->test3_binary_sensor_) {
+        this->test3_binary_sensor_->publish_state((this->store_.status & MICRON_0400_MASK) == MICRON_0400_MASK);
+      }
+      if (this->test4_binary_sensor_) {
+        this->test4_binary_sensor_->publish_state((this->store_.status & MICRON_0800_MASK) == MICRON_0800_MASK);
+      }
+      if (this->test5_binary_sensor_) {
+        this->test5_binary_sensor_->publish_state((this->store_.status & MICRON_1000_MASK) == MICRON_1000_MASK);
+      }
+
       if (!this->command_queue_.empty() && (millis() - this->last_command_ms_) >= MICRON_MAX_COMMAND_DELAY_MS) {
         this->last_command_ms_ = millis();
         auto command = this->command_queue_.front();
         ESP_LOGD(TAG, "Write command: 0x%02x", command);
         this->store_.write(command, 2);
-        this->last_command_ = command;     
+        this->last_command_ = command;
         this->command_queue_.pop();
         if (this->command_queue_.empty()) {
-          ESP_LOGD(TAG, "All commands written");          
+          ESP_LOGD(TAG, "All commands written");
         }
       }
     }

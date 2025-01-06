@@ -51,9 +51,16 @@ CONF_ZONE_2 = "zone2"
 CONF_ZONE_3 = "zone3"
 CONF_ZONE_4 = "zone4"
 CONF_ZONE_5 = "zone5"
+CONF_ZONE_7 = "zone7"
 
 CONF_KEYPAD = "keypad"
 CONF_STATUS = "status"
+
+CONF_TEST_1 = "test1"
+CONF_TEST_2 = "test2"
+CONF_TEST_3 = "test3"
+CONF_TEST_4 = "test4"
+CONF_TEST_5 = "test5"
 
 CONFIG_SCHEMA = cv.All(
     cv.Schema(
@@ -106,6 +113,10 @@ CONFIG_SCHEMA = cv.All(
                 device_class = DEVICE_CLASS_OCCUPANCY,
                 entity_category=ENTITY_CATEGORY_DIAGNOSTIC,
             ),
+            cv.Optional(CONF_ZONE_6): binary_sensor.binary_sensor_schema(
+                device_class = DEVICE_CLASS_OCCUPANCY,
+                entity_category=ENTITY_CATEGORY_DIAGNOSTIC,
+            ),
             cv.Optional(CONF_KEYPAD): text_sensor.text_sensor_schema(                
                 entity_category=ENTITY_CATEGORY_DIAGNOSTIC,
                 icon="mdi:dialpad"
@@ -113,6 +124,26 @@ CONFIG_SCHEMA = cv.All(
             cv.Optional(CONF_STATUS): text_sensor.text_sensor_schema(                
                 entity_category=ENTITY_CATEGORY_DIAGNOSTIC,
                 icon="mdi:list-status"
+            ),
+            cv.Optional(CONF_TEST_1): binary_sensor.binary_sensor_schema(
+                device_class = DEVICE_CLASS_OCCUPANCY,
+                entity_category=ENTITY_CATEGORY_DIAGNOSTIC,
+            ),
+            cv.Optional(CONF_TEST_2): binary_sensor.binary_sensor_schema(
+                device_class = DEVICE_CLASS_OCCUPANCY,
+                entity_category=ENTITY_CATEGORY_DIAGNOSTIC,
+            ),
+            cv.Optional(CONF_TEST_3): binary_sensor.binary_sensor_schema(
+                device_class = DEVICE_CLASS_OCCUPANCY,
+                entity_category=ENTITY_CATEGORY_DIAGNOSTIC,
+            ),
+            cv.Optional(CONF_TEST_4): binary_sensor.binary_sensor_schema(
+                device_class = DEVICE_CLASS_OCCUPANCY,
+                entity_category=ENTITY_CATEGORY_DIAGNOSTIC,
+            ),
+            cv.Optional(CONF_TEST_5): binary_sensor.binary_sensor_schema(
+                device_class = DEVICE_CLASS_OCCUPANCY,
+                entity_category=ENTITY_CATEGORY_DIAGNOSTIC,
             ),
         }
     ).extend(cv.polling_component_schema("60s"))#.extend(cv.COMPONENT_SCHEMA)
@@ -172,14 +203,18 @@ async def to_code(config):
     if CONF_ZONE_3 in config:
         sens = await binary_sensor.new_binary_sensor(config[CONF_ZONE_3])
         cg.add(var.set_zone3_binary_sensor(sens))
-    
+
     if CONF_ZONE_4 in config:
         sens = await binary_sensor.new_binary_sensor(config[CONF_ZONE_4])
         cg.add(var.set_zone4_binary_sensor(sens))
-    
+
     if CONF_ZONE_5 in config:
         sens = await binary_sensor.new_binary_sensor(config[CONF_ZONE_5])
         cg.add(var.set_zone5_binary_sensor(sens))
+
+    if CONF_ZONE_7 in config:
+        sens = await binary_sensor.new_binary_sensor(config[CONF_ZONE_7])
+        cg.add(var.set_zone7_binary_sensor(sens))
 
     if CONF_KEYPAD in config:
         sens = await text_sensor.new_text_sensor(config[CONF_KEYPAD])
@@ -188,6 +223,26 @@ async def to_code(config):
     if CONF_STATUS in config:
         sens = await text_sensor.new_text_sensor(config[CONF_STATUS])
         cg.add(var.set_status_text_sensor(sens))
+
+    if CONF_TEST_1 in config:
+        sens = await binary_sensor.new_binary_sensor(config[CONF_TEST_1])
+        cg.add(var.set_test1_binary_sensor(sens))
+
+    if CONF_TEST_2 in config:
+        sens = await binary_sensor.new_binary_sensor(config[CONF_TEST_2])
+        cg.add(var.set_test2_binary_sensor(sens))
+
+    if CONF_TEST_3 in config:
+        sens = await binary_sensor.new_binary_sensor(config[CONF_TEST_3])
+        cg.add(var.set_test3_binary_sensor(sens))
+
+    if CONF_TEST_4 in config:
+        sens = await binary_sensor.new_binary_sensor(config[CONF_TEST_4])
+        cg.add(var.set_test4_binary_sensor(sens))
+
+    if CONF_TEST_5 in config:
+        sens = await binary_sensor.new_binary_sensor(config[CONF_TEST_5])
+        cg.add(var.set_test5_binary_sensor(sens))
 
     cg.add(var.dump_config())
 

@@ -35,17 +35,22 @@ namespace esphome
     static const uint16_t MICRON_KEYPAD_0 = 0x21;
     static const uint16_t MICRON_KEYPAD_HASH = 0x11;
 
-    static const uint16_t MICRON_ZONE_1_MASK = 0x01;
-    static const uint16_t MICRON_ZONE_2_MASK = 0x02;
-    static const uint16_t MICRON_ZONE_3_MASK = 0x04;
-    static const uint16_t MICRON_ZONE_4_MASK = 0x08;
-    static const uint16_t MICRON_ZONE_5_MASK = 0x10;
-    static const uint16_t MICRON_S1_MASK = 0x40;    
-    static const uint16_t MICRON_KEY_BEEP_3_MASK = 0x80;
-    static const uint16_t MICRON_KEY_BEEP_2_MASK = 0x0100;
-    static const uint16_t MICRON_KEY_BEEP_1_MASK = 0x8000;
-    static const uint16_t MICRON_S2_MASK = 0x4000;
+    static const uint16_t MICRON_ZONE_1_MASK = 0x0001;
+    static const uint16_t MICRON_ZONE_2_MASK = 0x0002;
+    static const uint16_t MICRON_ZONE_3_MASK = 0x0004;
+    static const uint16_t MICRON_ZONE_4_MASK = 0x0008;
+    static const uint16_t MICRON_ZONE_5_MASK = 0x0010;
+    static const uint16_t MICRON_0020_MASK = 0x0020;
+    static const uint16_t MICRON_S1_MASK = 0x0040;
+    static const uint16_t MICRON_KEY_BEEP_3_MASK = 0x0080;
+    static const uint16_t MICRON_ZONE_7_MASK = 0x0100;
+    static const uint16_t MICRON_0200_MASK = 0x0200;
+    static const uint16_t MICRON_0400_MASK = 0x0400;
+    static const uint16_t MICRON_0800_MASK = 0x0800;
+    static const uint16_t MICRON_1000_MASK = 0x1000;
     static const uint16_t MICRON_M_MASK = 0x2000;
+    static const uint16_t MICRON_S2_MASK = 0x4000;
+    static const uint16_t MICRON_KEY_BEEP_1_MASK = 0x8000;
 
     static const uint32_t MICRON_MAX_COMMAND_DELAY_MS = 240;
 
@@ -125,9 +130,16 @@ namespace esphome
       void set_zone3_binary_sensor(binary_sensor::BinarySensor  *zone3_binary_sensor) { zone3_binary_sensor_ = zone3_binary_sensor; }
       void set_zone4_binary_sensor(binary_sensor::BinarySensor  *zone4_binary_sensor) { zone4_binary_sensor_ = zone4_binary_sensor; }
       void set_zone5_binary_sensor(binary_sensor::BinarySensor  *zone5_binary_sensor) { zone5_binary_sensor_ = zone5_binary_sensor; }
+      void set_zone7_binary_sensor(binary_sensor::BinarySensor  *zone7_binary_sensor) { zone7_binary_sensor_ = zone7_binary_sensor; }
 
       void set_keypad_text_sensor(text_sensor::TextSensor  *keypad_text_sensor) { keypad_text_sensor_ = keypad_text_sensor; }
       void set_status_text_sensor(text_sensor::TextSensor  *status_text_sensor) { status_text_sensor_ = status_text_sensor; }
+
+      void set_test1_binary_sensor(binary_sensor::BinarySensor  *test1_binary_sensor) { test1_binary_sensor_ = test1_binary_sensor; }
+      void set_test2_binary_sensor(binary_sensor::BinarySensor  *test2_binary_sensor) { test2_binary_sensor_ = test2_binary_sensor; }
+      void set_test3_binary_sensor(binary_sensor::BinarySensor  *test3_binary_sensor) { test3_binary_sensor_ = test3_binary_sensor; }
+      void set_test4_binary_sensor(binary_sensor::BinarySensor  *test4_binary_sensor) { test4_binary_sensor_ = test4_binary_sensor; }
+      void set_test5_binary_sensor(binary_sensor::BinarySensor  *test5_binary_sensor) { test5_binary_sensor_ = test5_binary_sensor; }
 
       uint8_t last_command();
 
@@ -163,9 +175,16 @@ namespace esphome
       binary_sensor::BinarySensor *zone3_binary_sensor_{nullptr};
       binary_sensor::BinarySensor *zone4_binary_sensor_{nullptr};
       binary_sensor::BinarySensor *zone5_binary_sensor_{nullptr};
+      binary_sensor::BinarySensor *zone7_binary_sensor_{nullptr};
 
       text_sensor::TextSensor *keypad_text_sensor_{nullptr};
       text_sensor::TextSensor *status_text_sensor_{nullptr};
+
+      binary_sensor::BinarySensor *test1_binary_sensor_{nullptr};
+      binary_sensor::BinarySensor *test2_binary_sensor_{nullptr};
+      binary_sensor::BinarySensor *test3_binary_sensor_{nullptr};
+      binary_sensor::BinarySensor *test4_binary_sensor_{nullptr};
+      binary_sensor::BinarySensor *test5_binary_sensor_{nullptr};
 
       Deduplicator<uint8_t> command_dedupe_;
       Deduplicator<uint16_t> status_dedupe_;
