@@ -222,9 +222,9 @@ namespace esphome
       if (this->beep1_binary_sensor_) {
         this->beep1_binary_sensor_->publish_state((this->store_.status & MICRON_KEY_BEEP_1_MASK) == MICRON_KEY_BEEP_1_MASK);
       }
-      if (this->beep2_binary_sensor_) {
-        this->beep2_binary_sensor_->publish_state((this->store_.status & MICRON_KEY_BEEP_2_MASK) == MICRON_KEY_BEEP_2_MASK);
-      }
+      //if (this->beep2_binary_sensor_) {
+      //  this->beep2_binary_sensor_->publish_state((this->store_.status & MICRON_KEY_BEEP_2_MASK) == MICRON_KEY_BEEP_2_MASK);
+      //}
       if (this->beep3_binary_sensor_) {
         this->beep3_binary_sensor_->publish_state((this->store_.status & MICRON_KEY_BEEP_3_MASK) == MICRON_KEY_BEEP_3_MASK);
       }
