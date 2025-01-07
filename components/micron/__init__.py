@@ -40,6 +40,7 @@ CONF_PRESS_KEYS = "keys"
 CONF_CONNECTED = "connected"
 
 CONF_M = "m"
+CONF_B = "b"
 CONF_S1 = "s1"
 CONF_S2 = "s2"
 CONF_BEEP_1 = "beep1"
@@ -51,16 +52,15 @@ CONF_ZONE_2 = "zone2"
 CONF_ZONE_3 = "zone3"
 CONF_ZONE_4 = "zone4"
 CONF_ZONE_5 = "zone5"
+CONF_ZONE_6 = "zone6"
 CONF_ZONE_7 = "zone7"
+CONF_ZONE_8 = "zone8"
 
 CONF_KEYPAD = "keypad"
 CONF_STATUS = "status"
 
 CONF_TEST_1 = "test1"
 CONF_TEST_2 = "test2"
-CONF_TEST_3 = "test3"
-CONF_TEST_4 = "test4"
-CONF_TEST_5 = "test5"
 
 CONFIG_SCHEMA = cv.All(
     cv.Schema(
@@ -74,6 +74,9 @@ CONFIG_SCHEMA = cv.All(
                 entity_category=ENTITY_CATEGORY_DIAGNOSTIC,
             ),
             cv.Optional(CONF_M): binary_sensor.binary_sensor_schema(
+                entity_category=ENTITY_CATEGORY_DIAGNOSTIC,
+            ),
+            cv.Optional(CONF_B): binary_sensor.binary_sensor_schema(
                 entity_category=ENTITY_CATEGORY_DIAGNOSTIC,
             ),
             cv.Optional(CONF_S1): binary_sensor.binary_sensor_schema(
@@ -113,15 +116,23 @@ CONFIG_SCHEMA = cv.All(
                 device_class = DEVICE_CLASS_OCCUPANCY,
                 entity_category=ENTITY_CATEGORY_DIAGNOSTIC,
             ),
+            cv.Optional(CONF_ZONE_6): binary_sensor.binary_sensor_schema(
+                device_class = DEVICE_CLASS_OCCUPANCY,
+                entity_category=ENTITY_CATEGORY_DIAGNOSTIC,
+            ),
             cv.Optional(CONF_ZONE_7): binary_sensor.binary_sensor_schema(
                 device_class = DEVICE_CLASS_OCCUPANCY,
                 entity_category=ENTITY_CATEGORY_DIAGNOSTIC,
             ),
-            cv.Optional(CONF_KEYPAD): text_sensor.text_sensor_schema(                
+            cv.Optional(CONF_ZONE_8): binary_sensor.binary_sensor_schema(
+                device_class = DEVICE_CLASS_OCCUPANCY,
+                entity_category=ENTITY_CATEGORY_DIAGNOSTIC,
+            ),
+            cv.Optional(CONF_KEYPAD): text_sensor.text_sensor_schema(
                 entity_category=ENTITY_CATEGORY_DIAGNOSTIC,
                 icon="mdi:dialpad"
             ),
-            cv.Optional(CONF_STATUS): text_sensor.text_sensor_schema(                
+            cv.Optional(CONF_STATUS): text_sensor.text_sensor_schema(
                 entity_category=ENTITY_CATEGORY_DIAGNOSTIC,
                 icon="mdi:list-status"
             ),
@@ -130,18 +141,6 @@ CONFIG_SCHEMA = cv.All(
                 entity_category=ENTITY_CATEGORY_DIAGNOSTIC,
             ),
             cv.Optional(CONF_TEST_2): binary_sensor.binary_sensor_schema(
-                device_class = DEVICE_CLASS_OCCUPANCY,
-                entity_category=ENTITY_CATEGORY_DIAGNOSTIC,
-            ),
-            cv.Optional(CONF_TEST_3): binary_sensor.binary_sensor_schema(
-                device_class = DEVICE_CLASS_OCCUPANCY,
-                entity_category=ENTITY_CATEGORY_DIAGNOSTIC,
-            ),
-            cv.Optional(CONF_TEST_4): binary_sensor.binary_sensor_schema(
-                device_class = DEVICE_CLASS_OCCUPANCY,
-                entity_category=ENTITY_CATEGORY_DIAGNOSTIC,
-            ),
-            cv.Optional(CONF_TEST_5): binary_sensor.binary_sensor_schema(
                 device_class = DEVICE_CLASS_OCCUPANCY,
                 entity_category=ENTITY_CATEGORY_DIAGNOSTIC,
             ),
@@ -171,6 +170,10 @@ async def to_code(config):
     if CONF_M in config:
         sens = await binary_sensor.new_binary_sensor(config[CONF_M])
         cg.add(var.set_m_binary_sensor(sens))
+
+    if CONF_BM in config:
+        sens = await binary_sensor.new_binary_sensor(config[CONF_B])
+        cg.add(var.set_b_binary_sensor(sens))
 
     if CONF_S1 in config:
         sens = await binary_sensor.new_binary_sensor(config[CONF_S1])
@@ -212,9 +215,17 @@ async def to_code(config):
         sens = await binary_sensor.new_binary_sensor(config[CONF_ZONE_5])
         cg.add(var.set_zone5_binary_sensor(sens))
 
+    if CONF_ZONE_6 in config:
+        sens = await binary_sensor.new_binary_sensor(config[CONF_ZONE_6])
+        cg.add(var.set_zone6_binary_sensor(sens))
+
     if CONF_ZONE_7 in config:
         sens = await binary_sensor.new_binary_sensor(config[CONF_ZONE_7])
         cg.add(var.set_zone7_binary_sensor(sens))
+
+    if CONF_ZONE_8 in config:
+        sens = await binary_sensor.new_binary_sensor(config[CONF_ZONE_8])
+        cg.add(var.set_zone8_binary_sensor(sens))
 
     if CONF_KEYPAD in config:
         sens = await text_sensor.new_text_sensor(config[CONF_KEYPAD])
@@ -231,18 +242,6 @@ async def to_code(config):
     if CONF_TEST_2 in config:
         sens = await binary_sensor.new_binary_sensor(config[CONF_TEST_2])
         cg.add(var.set_test2_binary_sensor(sens))
-
-    if CONF_TEST_3 in config:
-        sens = await binary_sensor.new_binary_sensor(config[CONF_TEST_3])
-        cg.add(var.set_test3_binary_sensor(sens))
-
-    if CONF_TEST_4 in config:
-        sens = await binary_sensor.new_binary_sensor(config[CONF_TEST_4])
-        cg.add(var.set_test4_binary_sensor(sens))
-
-    if CONF_TEST_5 in config:
-        sens = await binary_sensor.new_binary_sensor(config[CONF_TEST_5])
-        cg.add(var.set_test5_binary_sensor(sens))
 
     cg.add(var.dump_config())
 

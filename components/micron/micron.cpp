@@ -212,6 +212,9 @@ namespace esphome
       if (this->m_binary_sensor_) {
         this->m_binary_sensor_->publish_state((this->store_.status & MICRON_M_MASK) == MICRON_M_MASK);
       }
+      if (this->b_binary_sensor_) {
+        this->b_binary_sensor_->publish_state((this->store_.status & MICRON_B_MASK) == MICRON_B_MASK);
+      }
       if (this->s1_binary_sensor_) {
         this->s1_binary_sensor_->publish_state((this->store_.status & MICRON_S1_MASK) == MICRON_S1_MASK);
       }
@@ -222,9 +225,6 @@ namespace esphome
       if (this->beep1_binary_sensor_) {
         this->beep1_binary_sensor_->publish_state((this->store_.status & MICRON_KEY_BEEP_1_MASK) == MICRON_KEY_BEEP_1_MASK);
       }
-      //if (this->beep2_binary_sensor_) {
-      //  this->beep2_binary_sensor_->publish_state((this->store_.status & MICRON_KEY_BEEP_2_MASK) == MICRON_KEY_BEEP_2_MASK);
-      //}
       if (this->beep3_binary_sensor_) {
         this->beep3_binary_sensor_->publish_state((this->store_.status & MICRON_KEY_BEEP_3_MASK) == MICRON_KEY_BEEP_3_MASK);
       }
@@ -244,8 +244,14 @@ namespace esphome
       if (this->zone5_binary_sensor_) {
         this->zone5_binary_sensor_->publish_state((this->store_.status & MICRON_ZONE_5_MASK) == MICRON_ZONE_5_MASK);
       }
+      if (this->zone6_binary_sensor_) {
+        this->zone6_binary_sensor_->publish_state((this->store_.status & MICRON_ZONE_67_MASK) == MICRON_ZONE_6_MASK);
+      }
       if (this->zone7_binary_sensor_) {
         this->zone7_binary_sensor_->publish_state((this->store_.status & MICRON_ZONE_7_MASK) == MICRON_ZONE_7_MASK);
+      }
+      if (this->zone8_binary_sensor_) {
+        this->zone8_binary_sensor_->publish_state((this->store_.status & MICRON_ZONE_8_MASK) == MICRON_ZONE_8_MASK);
       }
 
       if (this->keypad_text_sensor_ && this->command_dedupe_.next(this->store_.command) && this->store_.command != 0x00) {
@@ -259,19 +265,10 @@ namespace esphome
       }
 
       if (this->test1_binary_sensor_) {
-        this->test1_binary_sensor_->publish_state((this->store_.status & MICRON_0020_MASK) == MICRON_0020_MASK);
+        this->test1_binary_sensor_->publish_state((this->store_.status & MICRON_0400_MASK) == MICRON_0400_MASK);
       }
       if (this->test2_binary_sensor_) {
-        this->test2_binary_sensor_->publish_state((this->store_.status & MICRON_0200_MASK) == MICRON_0200_MASK);
-      }
-      if (this->test3_binary_sensor_) {
-        this->test3_binary_sensor_->publish_state((this->store_.status & MICRON_0400_MASK) == MICRON_0400_MASK);
-      }
-      if (this->test4_binary_sensor_) {
-        this->test4_binary_sensor_->publish_state((this->store_.status & MICRON_0800_MASK) == MICRON_0800_MASK);
-      }
-      if (this->test5_binary_sensor_) {
-        this->test5_binary_sensor_->publish_state((this->store_.status & MICRON_1000_MASK) == MICRON_1000_MASK);
+        this->test2_binary_sensor_->publish_state((this->store_.status & MICRON_0800_MASK) == MICRON_0800_MASK);
       }
 
       if (!this->command_queue_.empty() && (millis() - this->last_command_ms_) >= MICRON_MAX_COMMAND_DELAY_MS) {
