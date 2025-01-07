@@ -245,7 +245,7 @@ namespace esphome
         this->zone5_binary_sensor_->publish_state((this->store_.status & MICRON_ZONE_5_MASK) == MICRON_ZONE_5_MASK);
       }
       if (this->zone6_binary_sensor_) {
-        this->zone6_binary_sensor_->publish_state((this->store_.status & MICRON_ZONE_67_MASK) == MICRON_ZONE_6_MASK);
+        this->zone6_binary_sensor_->publish_state((this->store_.status & MICRON_ZONE_6_MASK) == MICRON_ZONE_6_MASK);
       }
       if (this->zone7_binary_sensor_) {
         this->zone7_binary_sensor_->publish_state((this->store_.status & MICRON_ZONE_7_MASK) == MICRON_ZONE_7_MASK);
