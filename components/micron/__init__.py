@@ -171,7 +171,7 @@ async def to_code(config):
         sens = await binary_sensor.new_binary_sensor(config[CONF_M])
         cg.add(var.set_m_binary_sensor(sens))
 
-    if CONF_BM in config:
+    if CONF_B in config:
         sens = await binary_sensor.new_binary_sensor(config[CONF_B])
         cg.add(var.set_b_binary_sensor(sens))
 
