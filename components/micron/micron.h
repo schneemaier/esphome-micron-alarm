@@ -102,6 +102,9 @@ namespace esphome
       ISRInternalGPIOPin pin_clock_;
       ISRInternalGPIOPin pin_data_;
       ISRInternalGPIOPin pin_data_out_;
+      ISRInternalGPIOPin siren_data_;
+      ISRInternalGPIOPin siren_data_out_;
+
 
       uint32_t last_interrupt_us_;
 
@@ -114,6 +117,8 @@ namespace esphome
       void set_pin_clock(InternalGPIOPin *pin_clock) { pin_clock_ = pin_clock; }
       void set_pin_data(InternalGPIOPin *pin_data) { pin_data_ = pin_data; }
       void set_pin_data_out(InternalGPIOPin *pin_data_out) { pin_data_out_ = pin_data_out; }
+      void set_siren_data(InternalGPIOPin *siren_data) { siren_data_ = siren_data; }
+      void set_siren_data_out(InternalGPIOPin *siren_data_out) { siren_data_out_ = siren_data_out; }
 
       void set_connected_binary_sensor(binary_sensor::BinarySensor  *connected_binary_sensor) { connected_binary_sensor_ = connected_binary_sensor; }
 
@@ -159,6 +164,8 @@ namespace esphome
       InternalGPIOPin *pin_clock_;
       InternalGPIOPin *pin_data_;
       InternalGPIOPin *pin_data_out_;
+      InternalGPIOPin *siren_data_;
+      InternalGPIOPin *siren_data_out_;
 
       binary_sensor::BinarySensor *connected_binary_sensor_{nullptr};
 

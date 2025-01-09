@@ -35,6 +35,9 @@ MicronPressAction = micron_ns.class_("MicronPressAction", automation.Action)
 
 CONF_DATA_IN_PIN = "data_in_pin"
 CONF_DATA_OUT_PIN = "data_out_pin"
+CONF_SIREN_IN_PIN = "siren_in_pin"
+CONF_SIREN_OUT_PIN = "siren_out_pin"
+
 CONF_PRESS_KEYS = "keys"
 
 CONF_CONNECTED = "connected"
