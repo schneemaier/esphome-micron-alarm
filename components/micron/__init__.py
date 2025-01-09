@@ -72,6 +72,8 @@ CONFIG_SCHEMA = cv.All(
             cv.Required(CONF_CLOCK_PIN): cv.All(pins.internal_gpio_input_pin_schema),
             cv.Required(CONF_DATA_IN_PIN): cv.All(pins.internal_gpio_input_pin_schema),
             cv.Required(CONF_DATA_OUT_PIN): cv.All(pins.internal_gpio_output_pin_schema),
+            cv.Required(CONF_SIREN_IN_PIN): cv.All(pins.internal_gpio_input_pin_schema),
+            cv.Required(CONF_SIREN_OUT_PIN): cv.All(pins.internal_gpio_output_pin_schema),
             cv.Optional(CONF_CONNECTED): binary_sensor.binary_sensor_schema(
                 device_class = DEVICE_CLASS_CONNECTIVITY,
                 entity_category=ENTITY_CATEGORY_DIAGNOSTIC,
