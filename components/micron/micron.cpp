@@ -295,9 +295,9 @@ namespace esphome
 
     void MicronComponent::update() {
       ESP_LOGD(TAG, "Command: 0x%02x,  Status: 0x%04x", this->store_.command, this->store_.status);
-      ESP_LOGD(TAG, "Interrupts: %d, Bits: %d, Packets: %d, Packets Fixed: %d, Commands Sent: %d", 
+      ESP_LOGD(TAG, "Interrupts: %d, Bits: %d, Packets: %d, Packets Fixed: %d, Commands Sent: %d",
         this->store_.interrupts,
-        this->store_.bits_received, 
+        this->store_.bits_received,
         this->store_.packets_received,
         this->store_.packets_with_interference,
         this->store_.commands_sent);
