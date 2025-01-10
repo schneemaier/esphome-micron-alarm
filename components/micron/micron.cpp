@@ -1,4 +1,4 @@
-#include "micron.h"
+f#include "micron.h"
 #include "esphome/core/log.h"
 
 namespace esphome
@@ -105,12 +105,16 @@ namespace esphome
       pin_clock->setup();
       pin_data->setup();
       pin_data_out->setup();
+      ESP_LOGCONFIG(TAG, "Setting up siren_data...");
       siren_data->setup();
+      ESP_LOGCONFIG(TAG, "Setting up siren_data_out...");
       siren_data_out->setup();
       this->pin_clock_ = pin_clock->to_isr();
       this->pin_data_ = pin_data->to_isr();
       this->pin_data_out_ = pin_data_out->to_isr();
+      ESP_LOGCONFIG(TAG, "Setting up siren_data isr...");
       this->siren_data_ = siren_data->to_isr();
+      ESP_LOGCONFIG(TAG, "Setting up siren_data_out isr...");
       this->siren_data_out_ = siren_data_out->to_isr();
       pin_clock->attach_interrupt(MicronStore::interrupt, this, gpio::INTERRUPT_FALLING_EDGE);
       // pin_clock->attach_interrupt(MicronStore::interrupt, this, gpio::INTERRUPT_RISING_EDGE);
@@ -193,6 +197,7 @@ namespace esphome
 
       //this->store_.setup(this->pin_clock_, this->pin_data_, this->pin_data_out_);
       this->store_.setup(this->pin_clock_, this->pin_data_, this->pin_data_out_, this->siren_data_, this->siren_data_out_);
+      ESP_LOGCONFIG(TAG, "Setting up Micron...COMPLETED");
 
       // this->pin_clock_->attach_interrupt(MicronStore::gpio_intr, &this->store_, gpio::INTERRUPT_ANY_EDGE);
     }
