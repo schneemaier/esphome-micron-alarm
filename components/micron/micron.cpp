@@ -100,17 +100,18 @@ namespace esphome
       return false;
     }
 
-    void MicronStore::setup(InternalGPIOPin *pin_clock, InternalGPIOPin *pin_data, InternalGPIOPin *pin_data_out) { //, InternalGPIOPin *siren_data, InternalGPIOPin *siren_data_out) {
+    //void MicronStore::setup(InternalGPIOPin *pin_clock, InternalGPIOPin *pin_data, InternalGPIOPin *pin_data_out) {
+    void MicronStore::setup(InternalGPIOPin *pin_clock, InternalGPIOPin *pin_data, InternalGPIOPin *pin_data_out, InternalGPIOPin *siren_data, InternalGPIOPin *siren_data_out) {
       pin_clock->setup();
       pin_data->setup();
       pin_data_out->setup();
-      //pin_siren->setup();
-      //pin_siren_out->setup();
+      siren_data->setup();
+      siren_data_out->setup();
       this->pin_clock_ = pin_clock->to_isr();
       this->pin_data_ = pin_data->to_isr();
       this->pin_data_out_ = pin_data_out->to_isr();
-      //this->siren_data_ = siren_data->to_isr();
-      //this->siren_data_out_ = siren_data_out->to_isr();
+      this->siren_data_ = siren_data->to_isr();
+      this->siren_data_out_ = siren_data_out->to_isr();
       pin_clock->attach_interrupt(MicronStore::interrupt, this, gpio::INTERRUPT_FALLING_EDGE);
       // pin_clock->attach_interrupt(MicronStore::interrupt, this, gpio::INTERRUPT_RISING_EDGE);
     }
@@ -190,7 +191,8 @@ namespace esphome
     {
       ESP_LOGCONFIG(TAG, "Setting up Micron...");
 
-      this->store_.setup(this->pin_clock_, this->pin_data_, this->pin_data_out_); //, this->siren_data_, this->siren_data_out_);
+      //this->store_.setup(this->pin_clock_, this->pin_data_, this->pin_data_out_);
+      this->store_.setup(this->pin_clock_, this->pin_data_, this->pin_data_out_, this->siren_data_, this->siren_data_out_);
 
       // this->pin_clock_->attach_interrupt(MicronStore::gpio_intr, &this->store_, gpio::INTERRUPT_ANY_EDGE);
     }
@@ -201,8 +203,8 @@ namespace esphome
       LOG_PIN("  Pin Clock: ", this->pin_clock_);
       LOG_PIN("  Pin Data: ", this->pin_data_);
       LOG_PIN("  Pin Data Out: ", this->pin_data_out_);
-      //LOG_PIN("  Siren Data: ", this->siren_data_);
-      //LOG_PIN("  Siren Data Out: ", this->siren_data_out_);
+      LOG_PIN("  Siren Data: ", this->siren_data_);
+      LOG_PIN("  Siren Data Out: ", this->siren_data_out_);
       LOG_BINARY_SENSOR("  ", "Zone 1", this->zone1_binary_sensor_);
       LOG_BINARY_SENSOR("  ", "Zone 2", this->zone2_binary_sensor_);
       LOG_BINARY_SENSOR("  ", "Zone 3", this->zone3_binary_sensor_);
