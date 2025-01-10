@@ -1,4 +1,4 @@
-f#include "micron.h"
+#include "micron.h"
 #include "esphome/core/log.h"
 
 namespace esphome
