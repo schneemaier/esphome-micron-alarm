@@ -115,7 +115,7 @@ namespace esphome
       ESP_LOGCONFIG(TAG, "Setting up siren_data isr...");
       this->pin_siren_ = pin_siren->to_isr();
       ESP_LOGCONFIG(TAG, "Setting up siren_data_out isr...");
-      this->pin:siren_out_ = pin_siren_out->to_isr();
+      this->pin_siren_out_ = pin_siren_out->to_isr();
       pin_clock->attach_interrupt(MicronStore::interrupt, this, gpio::INTERRUPT_FALLING_EDGE);
       // pin_clock->attach_interrupt(MicronStore::interrupt, this, gpio::INTERRUPT_RISING_EDGE);
     }
