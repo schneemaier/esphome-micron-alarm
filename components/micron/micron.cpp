@@ -105,16 +105,12 @@ namespace esphome
       pin_clock->setup();
       pin_data->setup();
       pin_data_out->setup();
-      ESP_LOGCONFIG(TAG, "Setting up siren_data...");
       pin_siren->setup();
-      ESP_LOGCONFIG(TAG, "Setting up siren_data_out...");
       pin_siren_out->setup();
       this->pin_clock_ = pin_clock->to_isr();
       this->pin_data_ = pin_data->to_isr();
       this->pin_data_out_ = pin_data_out->to_isr();
-      ESP_LOGCONFIG(TAG, "Setting up siren_data isr...");
       this->pin_siren_ = pin_siren->to_isr();
-      ESP_LOGCONFIG(TAG, "Setting up siren_data_out isr...");
       this->pin_siren_out_ = pin_siren_out->to_isr();
       pin_clock->attach_interrupt(MicronStore::interrupt, this, gpio::INTERRUPT_FALLING_EDGE);
       // pin_clock->attach_interrupt(MicronStore::interrupt, this, gpio::INTERRUPT_RISING_EDGE);
@@ -194,11 +190,6 @@ namespace esphome
     void MicronComponent::setup()
     {
       ESP_LOGCONFIG(TAG, "Setting up Micron...");
-      LOG_PIN("  Pin Clock: ", this->pin_clock_);
-      LOG_PIN("  Pin Data: ", this->pin_data_);
-      LOG_PIN("  Pin Data Out: ", this->pin_data_out_);
-      LOG_PIN("  Siren Data: ", this->pin_siren_);
-      LOG_PIN("  Siren Data Out: ", this->pin_siren_out_);
       
       //this->store_.setup(this->pin_clock_, this->pin_data_, this->pin_data_out_);
       this->store_.setup(this->pin_clock_, this->pin_data_, this->pin_data_out_, this->pin_siren_, this->pin_siren_out_);
@@ -236,11 +227,11 @@ namespace esphome
       if (this->b_binary_sensor_) {
         this->b_binary_sensor_->publish_state((this->store_.status & MICRON_B_MASK) == MICRON_B_MASK);
       }
-      if (this->s1_binary_sensor_) {
-        this->s1_binary_sensor_->publish_state((this->store_.status & MICRON_S1_MASK) == MICRON_S1_MASK);
+      if (this->zonea_binary_sensor_) {
+        this->zonea_binary_sensor_->publish_state((this->store_.status & MICRON_ZONE_A_MASK) == MICRON_ZONE_A_MASK);
       }
-      if (this->s2_binary_sensor_) {
-        this->s2_binary_sensor_->publish_state((this->store_.status & MICRON_S2_MASK) == MICRON_S2_MASK);
+      if (this->zoneb_binary_sensor_) {
+        this->zoneb_binary_sensor_->publish_state((this->store_.status & MICRON_ZONE_B_MASK) == MICRON_ZONE_B_MASK);
       }
 
       if (this->beep1_binary_sensor_) {

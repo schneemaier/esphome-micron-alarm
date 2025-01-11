@@ -41,7 +41,7 @@ namespace esphome
     static const uint16_t MICRON_ZONE_4_MASK = 0x0008;
     static const uint16_t MICRON_ZONE_5_MASK = 0x0010;
     static const uint16_t MICRON_ZONE_6_MASK = 0x0020;
-    static const uint16_t MICRON_S1_MASK = 0x0040;
+    static const uint16_t MICRON_ZONE_A_MASK = 0x0040;
     static const uint16_t MICRON_KEY_BEEP_3_MASK = 0x0080;
     static const uint16_t MICRON_ZONE_7_MASK = 0x0100;
     static const uint16_t MICRON_ZONE_8_MASK = 0x0200;
@@ -49,7 +49,7 @@ namespace esphome
     static const uint16_t MICRON_0800_MASK = 0x0800;
     static const uint16_t MICRON_B_MASK = 0x1000;
     static const uint16_t MICRON_M_MASK = 0x2000;
-    static const uint16_t MICRON_S2_MASK = 0x4000;
+    static const uint16_t MICRON_ZONE_B_MASK = 0x4000;
     static const uint16_t MICRON_KEY_BEEP_1_MASK = 0x8000;
 
     static const uint32_t MICRON_MAX_COMMAND_DELAY_MS = 240;
@@ -125,11 +125,10 @@ namespace esphome
 
       void set_m_binary_sensor(binary_sensor::BinarySensor  *m_binary_sensor) { m_binary_sensor_ = m_binary_sensor; }
       void set_b_binary_sensor(binary_sensor::BinarySensor  *b_binary_sensor) { b_binary_sensor_ = b_binary_sensor; }
-      void set_s1_binary_sensor(binary_sensor::BinarySensor  *s1_binary_sensor) { s1_binary_sensor_ = s1_binary_sensor; }
-      void set_s2_binary_sensor(binary_sensor::BinarySensor  *s2_binary_sensor) { s2_binary_sensor_ = s2_binary_sensor; }
+      void set_zonea_binary_sensor(binary_sensor::BinarySensor  *zonea_binary_sensor) { zonea_binary_sensor_ = zonea_binary_sensor; }
+      void set_zoneb_binary_sensor(binary_sensor::BinarySensor  *zoneb_binary_sensor) { zoneb_binary_sensor_ = zoneb_binary_sensor; }
 
       void set_beep1_binary_sensor(binary_sensor::BinarySensor  *beep1_binary_sensor) { beep1_binary_sensor_ = beep1_binary_sensor; }
-      void set_beep2_binary_sensor(binary_sensor::BinarySensor  *beep2_binary_sensor) { beep2_binary_sensor_ = beep2_binary_sensor; }
       void set_beep3_binary_sensor(binary_sensor::BinarySensor  *beep3_binary_sensor) { beep3_binary_sensor_ = beep3_binary_sensor; }
 
       void set_zone1_binary_sensor(binary_sensor::BinarySensor  *zone1_binary_sensor) { zone1_binary_sensor_ = zone1_binary_sensor; }
@@ -172,11 +171,10 @@ namespace esphome
 
       binary_sensor::BinarySensor *m_binary_sensor_{nullptr};
       binary_sensor::BinarySensor *b_binary_sensor_{nullptr};
-      binary_sensor::BinarySensor *s1_binary_sensor_{nullptr};
-      binary_sensor::BinarySensor *s2_binary_sensor_{nullptr};
+      binary_sensor::BinarySensor *zonea_binary_sensor_{nullptr};
+      binary_sensor::BinarySensor *zoneb_binary_sensor_{nullptr};
 
       binary_sensor::BinarySensor *beep1_binary_sensor_{nullptr};
-      binary_sensor::BinarySensor *beep2_binary_sensor_{nullptr};
       binary_sensor::BinarySensor *beep3_binary_sensor_{nullptr};
 
       binary_sensor::BinarySensor *zone1_binary_sensor_{nullptr};

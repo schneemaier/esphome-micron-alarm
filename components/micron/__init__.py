@@ -44,8 +44,8 @@ CONF_CONNECTED = "connected"
 
 CONF_M = "m"
 CONF_B = "b"
-CONF_S1 = "s1"
-CONF_S2 = "s2"
+CONF_ZONE_A = "zoneA"
+CONF_ZONE_B = "zoneB"
 CONF_BEEP_1 = "beep1"
 CONF_BEEP_2 = "beep2"
 CONF_BEEP_3 = "beep3"
@@ -84,10 +84,10 @@ CONFIG_SCHEMA = cv.All(
             cv.Optional(CONF_B): binary_sensor.binary_sensor_schema(
                 entity_category=ENTITY_CATEGORY_DIAGNOSTIC,
             ),
-            cv.Optional(CONF_S1): binary_sensor.binary_sensor_schema(
+            cv.Optional(CONF_ZONE_A): binary_sensor.binary_sensor_schema(
                 entity_category=ENTITY_CATEGORY_DIAGNOSTIC,
             ),
-            cv.Optional(CONF_S2): binary_sensor.binary_sensor_schema(
+            cv.Optional(CONF_ZONE_B): binary_sensor.binary_sensor_schema(
                 entity_category=ENTITY_CATEGORY_DIAGNOSTIC,
             ),
             cv.Optional(CONF_BEEP_1): binary_sensor.binary_sensor_schema(
@@ -185,12 +185,12 @@ async def to_code(config):
         cg.add(var.set_b_binary_sensor(sens))
 
     if CONF_S1 in config:
-        sens = await binary_sensor.new_binary_sensor(config[CONF_S1])
-        cg.add(var.set_s1_binary_sensor(sens))
+        sens = await binary_sensor.new_binary_sensor(config[CONF_ZONE_A])
+        cg.add(var.set_zonea_binary_sensor(sens))
 
     if CONF_S2 in config:
-        sens = await binary_sensor.new_binary_sensor(config[CONF_S2])
-        cg.add(var.set_s2_binary_sensor(sens))
+        sens = await binary_sensor.new_binary_sensor(config[CONF_ZONE_B])
+        cg.add(var.set_zoneb_binary_sensor(sens))
 
     if CONF_BEEP_1 in config:
         sens = await binary_sensor.new_binary_sensor(config[CONF_BEEP_1])
