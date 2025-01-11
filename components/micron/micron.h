@@ -52,6 +52,8 @@ namespace esphome
     static const uint16_t MICRON_ZONE_B_MASK = 0x4000;
     static const uint16_t MICRON_KEY_BEEP_1_MASK = 0x8000;
 
+    static const uint16_t MICRON_SIREN_MASK = 0x0001;
+
     static const uint32_t MICRON_MAX_COMMAND_DELAY_MS = 240;
 
     uint8_t key_to_command(const char key);
@@ -82,6 +84,7 @@ namespace esphome
     public:
       uint8_t command;
       uint16_t status;
+      uint16_t siren; //bit 0 will store siren input status
 
       uint32_t interrupts = 0;
       uint32_t bits_received = 0;

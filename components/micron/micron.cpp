@@ -158,6 +158,15 @@ namespace esphome
         arg->packet_interrupts = 0;
         arg->packet_bits = 0;
         arg->set_data_(arg->processor_.packet);
+      
+        // siren handling
+        bool data_bit = arg->siren_data_.digital_read();
+        if (data_bit) {
+          this->store_.siren = 0x0001;
+        }
+        else {
+          this->store_.siren = 0x0000;
+        }
       }
     }
 
@@ -272,9 +281,9 @@ namespace esphome
       if (this->status_text_sensor_ && this->status_dedupe_.next(this->store_.status)) {
         this->status_text_sensor_->publish_state(str_sprintf("0x%04x", this->store_.status));
       }
-      //if (this->siren_binary_sensor_) {
-      //  this->siren_binary_sensor_->publish_state(bool arg->pin_siren_.digital_read());
-      //}
+      if (this->siren_binary_sensor_) {
+        this->siren_binary_sensor_->publish_state((this->store_.siren & MICRON_SIREN_MASK) == MICRON_SIREN_MASK);
+      }
       if (this->connected_binary_sensor_) {
         this->connected_binary_sensor_->publish_state(is_connected);
       }
