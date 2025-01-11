@@ -43,7 +43,7 @@ CONF_PRESS_KEYS = "keys"
 CONF_CONNECTED = "connected"
 
 CONF_M = "m"
-CONF_B = "b"
+CONF_BATTERY = "battery"
 CONF_ZONE_A = "zoneA"
 CONF_ZONE_B = "zoneB"
 CONF_BEEP_1 = "beep1"
@@ -63,7 +63,7 @@ CONF_KEYPAD = "keypad"
 CONF_STATUS = "status"
 CONF_SIREN  = "siren"
 
-CONF_TEST_1 = "test1"
+CONF_NIGHT_ARMED = "night"
 CONF_TEST_2 = "test2"
 
 CONFIG_SCHEMA = cv.All(
@@ -82,7 +82,7 @@ CONFIG_SCHEMA = cv.All(
             cv.Optional(CONF_M): binary_sensor.binary_sensor_schema(
                 entity_category=ENTITY_CATEGORY_DIAGNOSTIC,
             ),
-            cv.Optional(CONF_B): binary_sensor.binary_sensor_schema(
+            cv.Optional(CONF_BATTERY): binary_sensor.binary_sensor_schema(
                 entity_category=ENTITY_CATEGORY_DIAGNOSTIC,
             ),
             cv.Optional(CONF_ZONE_A): binary_sensor.binary_sensor_schema(
@@ -146,7 +146,7 @@ CONFIG_SCHEMA = cv.All(
                 device_class = DEVICE_CLASS_OCCUPANCY,
                 entity_category=ENTITY_CATEGORY_DIAGNOSTIC,
             ),    
-            cv.Optional(CONF_TEST_1): binary_sensor.binary_sensor_schema(
+            cv.Optional(CONF_NIGHT_ARMED): binary_sensor.binary_sensor_schema(
                 device_class = DEVICE_CLASS_OCCUPANCY,
                 entity_category=ENTITY_CATEGORY_DIAGNOSTIC,
             ),
@@ -185,9 +185,9 @@ async def to_code(config):
         sens = await binary_sensor.new_binary_sensor(config[CONF_M])
         cg.add(var.set_m_binary_sensor(sens))
 
-    if CONF_B in config:
+    if CONF_BATTERY in config:
         sens = await binary_sensor.new_binary_sensor(config[CONF_B])
-        cg.add(var.set_b_binary_sensor(sens))
+        cg.add(var.set_battery_binary_sensor(sens))
 
     if CONF_ZONE_A in config:
         sens = await binary_sensor.new_binary_sensor(config[CONF_ZONE_A])
@@ -253,9 +253,9 @@ async def to_code(config):
         sens = await binary_sensor.new_binary_sensor(config[CONF_SIREN])
         cg.add(var.set_siren_binary_sensor(sens))
 
-    if CONF_TEST_1 in config:
-        sens = await binary_sensor.new_binary_sensor(config[CONF_TEST_1])
-        cg.add(var.set_test1_binary_sensor(sens))
+    if CONF_NIGHT_ARMED in config:
+        sens = await binary_sensor.new_binary_sensor(config[CONF_NIGHT_ARMED])
+        cg.add(var.set_night_binary_sensor(sens))
 
     if CONF_TEST_2 in config:
         sens = await binary_sensor.new_binary_sensor(config[CONF_TEST_2])

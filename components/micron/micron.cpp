@@ -233,8 +233,8 @@ namespace esphome
       if (this->m_binary_sensor_) {
         this->m_binary_sensor_->publish_state((this->store_.status & MICRON_M_MASK) == MICRON_M_MASK);
       }
-      if (this->b_binary_sensor_) {
-        this->b_binary_sensor_->publish_state((this->store_.status & MICRON_B_MASK) == MICRON_B_MASK);
+      if (this->battery_binary_sensor_) {
+        this->battery_binary_sensor_->publish_state((this->store_.status & MICRON_BATTERY_MASK) == MICRON_BATTERY_MASK);
       }
       if (this->zonea_binary_sensor_) {
         this->zonea_binary_sensor_->publish_state((this->store_.status & MICRON_ZONE_A_MASK) == MICRON_ZONE_A_MASK);
@@ -288,8 +288,8 @@ namespace esphome
         this->connected_binary_sensor_->publish_state(is_connected);
       }
 
-      if (this->test1_binary_sensor_) {
-        this->test1_binary_sensor_->publish_state((this->store_.status & MICRON_0400_MASK) == MICRON_0400_MASK);
+      if (this->night_binary_sensor_) {
+        this->night_binary_sensor_->publish_state((this->store_.status & MICRON_NIGHT_ARMED_MASK) == MICRON_NIGHT_ARMED_MASK);
       }
       if (this->test2_binary_sensor_) {
         this->test2_binary_sensor_->publish_state((this->store_.status & MICRON_0800_MASK) == MICRON_0800_MASK);

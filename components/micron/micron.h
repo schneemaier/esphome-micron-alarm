@@ -45,9 +45,9 @@ namespace esphome
     static const uint16_t MICRON_KEY_BEEP_3_MASK = 0x0080;
     static const uint16_t MICRON_ZONE_7_MASK = 0x0100;
     static const uint16_t MICRON_ZONE_8_MASK = 0x0200;
-    static const uint16_t MICRON_0400_MASK = 0x0400;
+    static const uint16_t MICRON_NIGHT_ARMED_MASK = 0x0400;
     static const uint16_t MICRON_0800_MASK = 0x0800;
-    static const uint16_t MICRON_B_MASK = 0x1000;
+    static const uint16_t MICRON_BATTERY_MASK = 0x1000;
     static const uint16_t MICRON_M_MASK = 0x2000;
     static const uint16_t MICRON_ZONE_B_MASK = 0x4000;
     static const uint16_t MICRON_KEY_BEEP_1_MASK = 0x8000;
@@ -127,7 +127,7 @@ namespace esphome
       void set_connected_binary_sensor(binary_sensor::BinarySensor  *connected_binary_sensor) { connected_binary_sensor_ = connected_binary_sensor; }
 
       void set_m_binary_sensor(binary_sensor::BinarySensor  *m_binary_sensor) { m_binary_sensor_ = m_binary_sensor; }
-      void set_b_binary_sensor(binary_sensor::BinarySensor  *b_binary_sensor) { b_binary_sensor_ = b_binary_sensor; }
+      void set_battery_binary_sensor(binary_sensor::BinarySensor  *battery_binary_sensor) { battery_binary_sensor_ = battery_binary_sensor; }
       void set_zonea_binary_sensor(binary_sensor::BinarySensor  *zonea_binary_sensor) { zonea_binary_sensor_ = zonea_binary_sensor; }
       void set_zoneb_binary_sensor(binary_sensor::BinarySensor  *zoneb_binary_sensor) { zoneb_binary_sensor_ = zoneb_binary_sensor; }
 
@@ -147,7 +147,7 @@ namespace esphome
       void set_status_text_sensor(text_sensor::TextSensor  *status_text_sensor) { status_text_sensor_ = status_text_sensor; }
       void set_siren_binary_sensor(binary_sensor::BinarySensor  *siren_binary_sensor) { siren_binary_sensor_ = siren_binary_sensor; }
       
-      void set_test1_binary_sensor(binary_sensor::BinarySensor  *test1_binary_sensor) { test1_binary_sensor_ = test1_binary_sensor; }
+      void set_night_binary_sensor(binary_sensor::BinarySensor  *night_binary_sensor) { night_binary_sensor_ = night_binary_sensor; }
       void set_test2_binary_sensor(binary_sensor::BinarySensor  *test2_binary_sensor) { test2_binary_sensor_ = test2_binary_sensor; }
 
       uint8_t last_command();
@@ -174,7 +174,7 @@ namespace esphome
       binary_sensor::BinarySensor *connected_binary_sensor_{nullptr};
 
       binary_sensor::BinarySensor *m_binary_sensor_{nullptr};
-      binary_sensor::BinarySensor *b_binary_sensor_{nullptr};
+      binary_sensor::BinarySensor *battery_binary_sensor_{nullptr};
       binary_sensor::BinarySensor *zonea_binary_sensor_{nullptr};
       binary_sensor::BinarySensor *zoneb_binary_sensor_{nullptr};
 
@@ -194,7 +194,7 @@ namespace esphome
       text_sensor::TextSensor *status_text_sensor_{nullptr};
       binary_sensor::BinarySensor *siren_binary_sensor_{nullptr};
 
-      binary_sensor::BinarySensor *test1_binary_sensor_{nullptr};
+      binary_sensor::BinarySensor *night_binary_sensor_{nullptr};
       binary_sensor::BinarySensor *test2_binary_sensor_{nullptr};
 
       Deduplicator<uint8_t> command_dedupe_;
