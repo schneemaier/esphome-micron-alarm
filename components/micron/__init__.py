@@ -61,6 +61,7 @@ CONF_ZONE_8 = "zone8"
 
 CONF_KEYPAD = "keypad"
 CONF_STATUS = "status"
+CONF_SIREN  = "siren"
 
 CONF_TEST_1 = "test1"
 CONF_TEST_2 = "test2"
@@ -141,6 +142,10 @@ CONFIG_SCHEMA = cv.All(
                 entity_category=ENTITY_CATEGORY_DIAGNOSTIC,
                 icon="mdi:list-status"
             ),
+            cv.Optional(CONF_SIREN): binary_sensor.binary_sensor_schema(
+                device_class = DEVICE_CLASS_OCCUPANCY,
+                entity_category=ENTITY_CATEGORY_DIAGNOSTIC,
+                
             cv.Optional(CONF_TEST_1): binary_sensor.binary_sensor_schema(
                 device_class = DEVICE_CLASS_OCCUPANCY,
                 entity_category=ENTITY_CATEGORY_DIAGNOSTIC,
@@ -244,7 +249,11 @@ async def to_code(config):
         sens = await text_sensor.new_text_sensor(config[CONF_STATUS])
         cg.add(var.set_status_text_sensor(sens))
 
-    if CONF_TEST_1 in config:
+    if CONF_SIREN in config:
+        sens = await binary_sensor.new_binary_sensor(config[CONF_SIREN])
+        cg.add(var.set_status_text_sensor(sens))
+
+if CONF_TEST_1 in config:
         sens = await binary_sensor.new_binary_sensor(config[CONF_TEST_1])
         cg.add(var.set_test1_binary_sensor(sens))
 

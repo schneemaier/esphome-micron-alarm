@@ -142,7 +142,8 @@ namespace esphome
 
       void set_keypad_text_sensor(text_sensor::TextSensor  *keypad_text_sensor) { keypad_text_sensor_ = keypad_text_sensor; }
       void set_status_text_sensor(text_sensor::TextSensor  *status_text_sensor) { status_text_sensor_ = status_text_sensor; }
-
+      void set_siren_binary_sensor(binary_sensor::BinarySensor  *siren_binary_sensor) { siren_binary_sensor_ = siren_binary_sensor; }
+      
       void set_test1_binary_sensor(binary_sensor::BinarySensor  *test1_binary_sensor) { test1_binary_sensor_ = test1_binary_sensor; }
       void set_test2_binary_sensor(binary_sensor::BinarySensor  *test2_binary_sensor) { test2_binary_sensor_ = test2_binary_sensor; }
 
@@ -188,6 +189,7 @@ namespace esphome
 
       text_sensor::TextSensor *keypad_text_sensor_{nullptr};
       text_sensor::TextSensor *status_text_sensor_{nullptr};
+      binary_sensor::BinarySensor *siren_binary_sensor_{nullptr};
 
       binary_sensor::BinarySensor *test1_binary_sensor_{nullptr};
       binary_sensor::BinarySensor *test2_binary_sensor_{nullptr};
