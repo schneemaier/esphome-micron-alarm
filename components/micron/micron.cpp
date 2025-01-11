@@ -160,7 +160,7 @@ namespace esphome
         arg->set_data_(arg->processor_.packet);
       
         // siren handling
-        bool data_bit = arg->siren_data_.digital_read();
+        bool data_bit = arg->pin_siren_.digital_read();
         if (data_bit) {
           this->store_.siren = 0x0001;
         }
