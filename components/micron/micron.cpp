@@ -194,7 +194,12 @@ namespace esphome
     void MicronComponent::setup()
     {
       ESP_LOGCONFIG(TAG, "Setting up Micron...");
-
+      LOG_PIN("  Pin Clock: ", this->pin_clock_);
+      LOG_PIN("  Pin Data: ", this->pin_data_);
+      LOG_PIN("  Pin Data Out: ", this->pin_data_out_);
+      LOG_PIN("  Siren Data: ", this->pin_siren_);
+      LOG_PIN("  Siren Data Out: ", this->pin_siren_out_);
+      
       //this->store_.setup(this->pin_clock_, this->pin_data_, this->pin_data_out_);
       this->store_.setup(this->pin_clock_, this->pin_data_, this->pin_data_out_, this->pin_siren_, this->pin_siren_out_);
       ESP_LOGCONFIG(TAG, "Setting up Micron...COMPLETED");
