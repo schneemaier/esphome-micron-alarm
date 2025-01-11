@@ -272,9 +272,9 @@ namespace esphome
       if (this->status_text_sensor_ && this->status_dedupe_.next(this->store_.status)) {
         this->status_text_sensor_->publish_state(str_sprintf("0x%04x", this->store_.status));
       }
-      if (this->siren_binary_sensor_) {
-        this->siren_binary_sensor_->publish_state(bool arg->pin_siren_.digital_read());
-      }
+      //if (this->siren_binary_sensor_) {
+      //  this->siren_binary_sensor_->publish_state(bool arg->pin_siren_.digital_read());
+      //}
       if (this->connected_binary_sensor_) {
         this->connected_binary_sensor_->publish_state(is_connected);
       }
