@@ -253,7 +253,7 @@ async def to_code(config):
         sens = await binary_sensor.new_binary_sensor(config[CONF_SIREN])
         cg.add(var.set_status_text_sensor(sens))
 
-if CONF_TEST_1 in config:
+    if CONF_TEST_1 in config:
         sens = await binary_sensor.new_binary_sensor(config[CONF_TEST_1])
         cg.add(var.set_test1_binary_sensor(sens))
 
