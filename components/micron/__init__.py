@@ -168,9 +168,9 @@ async def to_code(config):
     pin_data_out = await gpio_pin_expression(config[CONF_DATA_OUT_PIN])
     cg.add(var.set_pin_data_out(pin_data_out))
     pin_siren = await gpio_pin_expression(config[CONF_SIREN_IN_PIN])
-    cg.add(var.set_pin_data(pin_siren))
+    cg.add(var.set_pin_siren(pin_siren))
     pin_siren_out = await gpio_pin_expression(config[CONF_SIREN_OUT_PIN])
-    cg.add(var.set_pin_data_out(pin_siren_out))
+    cg.add(var.set_pin_siren_out(pin_siren_out))
 
     if CONF_CONNECTED in config:
         sens = await binary_sensor.new_binary_sensor(config[CONF_CONNECTED])
