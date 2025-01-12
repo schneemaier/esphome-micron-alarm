@@ -112,8 +112,11 @@ namespace esphome
       this->pin_data_out_ = pin_data_out->to_isr();
       this->pin_siren_ = pin_siren->to_isr();
       this->pin_siren_out_ = pin_siren_out->to_isr();
-      //pin_clock->attach_interrupt(MicronStore::interrupt, this, gpio::INTERRUPT_FALLING_EDGE);
-      pin_clock->attach_interrupt(MicronStore::interrupt, this, gpio::INTERRUPT_RISING_EDGE);
+      // Writing command and reading status should be on falling edge, however reading the commands from the keyboard
+      // should happen on rising edge
+      // TODO: create a separate interrupt routing just for reading keyboard commands
+      pin_clock->attach_interrupt(MicronStore::interrupt, this, gpio::INTERRUPT_FALLING_EDGE);
+      //pin_clock->attach_interrupt(MicronStore::interrupt, this, gpio::INTERRUPT_RISING_EDGE);
     }
 
     void MicronStore::write(uint8_t command, uint8_t repeat) {
@@ -142,7 +145,7 @@ namespace esphome
 
       arg->processor_.next(now_ms);
 
-      //arg->processor_.write(&arg->pin_data_out_);
+      arg->processor_.write(&arg->pin_data_out_);
 
       bool data_bit = arg->pin_data_.digital_read();
 
