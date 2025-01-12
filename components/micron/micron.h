@@ -20,7 +20,7 @@ namespace esphome
     static const uint8_t MICRON_BYTE_HIGH = 1;
     static const uint8_t MICRON_BYTE_LOW = 2;
 
-    static const uint8_t MICRON_COMMAND_FRAME_SIZE = 8;
+    static const uint8_t MICRON_COMMAND_FRAME_SIZE = 8; // was 7 originally, but 8 bit commands are required
 
     // Original codes from muxa
     // static const uint16_t MICRON_KEYPAD_1 = 0x48;
@@ -37,21 +37,21 @@ namespace esphome
     // static const uint16_t MICRON_KEYPAD_HASH = 0x11;
 
     // micron LED keyboard codes
-    static const uint16_t MICRON_KEYPAD_1 = 0x6c;
-    static const uint16_t MICRON_KEYPAD_2 = 0x3c;
-    static const uint16_t MICRON_KEYPAD_3 = 0x1c;
-    static const uint16_t MICRON_KEYPAD_4 = 0x66;
-    static const uint16_t MICRON_KEYPAD_5 = 0x36;
-    static const uint16_t MICRON_KEYPAD_6 = 0x1e;
-    static const uint16_t MICRON_KEYPAD_7 = 0x63;
-    static const uint16_t MICRON_KEYPAD_8 = 0x33;
-    static const uint16_t MICRON_KEYPAD_9 = 0x1b;
-    static const uint16_t MICRON_KEYPAD_STAR = 0x61;
-    static const uint16_t MICRON_KEYPAD_0 = 0x31;
-    static const uint16_t MICRON_KEYPAD_HASH = 0x19;
-    static const uint16_t MICRON_KEYPAD_F1 = 0x0d;
-    static const uint16_t MICRON_KEYPAD_F2 = 0x0f;
-    static const uint16_t MICRON_KEYPAD_F3 = 0x0f; // Something is wrong
+    static const uint16_t MICRON_KEYPAD_1 = 0xd8;
+    static const uint16_t MICRON_KEYPAD_2 = 0x78;
+    static const uint16_t MICRON_KEYPAD_3 = 0x38;
+    static const uint16_t MICRON_KEYPAD_4 = 0xcc;
+    static const uint16_t MICRON_KEYPAD_5 = 0x6c;
+    static const uint16_t MICRON_KEYPAD_6 = 0x3c;
+    static const uint16_t MICRON_KEYPAD_7 = 0xc6;
+    static const uint16_t MICRON_KEYPAD_8 = 0x66;
+    static const uint16_t MICRON_KEYPAD_9 = 0x36;
+    static const uint16_t MICRON_KEYPAD_STAR = 0xc3;
+    static const uint16_t MICRON_KEYPAD_0 = 0x63;
+    static const uint16_t MICRON_KEYPAD_HASH = 0x33;
+    static const uint16_t MICRON_KEYPAD_F1 = 0x1b;
+    static const uint16_t MICRON_KEYPAD_F2 = 0x1e;
+    static const uint16_t MICRON_KEYPAD_F3 = 0x1f; // Something is wrong
 
     static const uint16_t MICRON_ZONE_1_MASK = 0x0001;
     static const uint16_t MICRON_ZONE_2_MASK = 0x0002;

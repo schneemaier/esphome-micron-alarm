@@ -45,7 +45,7 @@ namespace esphome
 
         if (this->command_repeat > 0) {
           // more repeats. restart write bits
-          this->remaining_command_writes = MICRON_COMMAND_FRAME_SIZE + 1;
+          this->remaining_command_writes = MICRON_COMMAND_FRAME_SIZE; // + 1; 
         }
       }
 
@@ -112,8 +112,8 @@ namespace esphome
       this->pin_data_out_ = pin_data_out->to_isr();
       this->pin_siren_ = pin_siren->to_isr();
       this->pin_siren_out_ = pin_siren_out->to_isr();
-      pin_clock->attach_interrupt(MicronStore::interrupt, this, gpio::INTERRUPT_FALLING_EDGE);
-      // pin_clock->attach_interrupt(MicronStore::interrupt, this, gpio::INTERRUPT_RISING_EDGE);
+      //pin_clock->attach_interrupt(MicronStore::interrupt, this, gpio::INTERRUPT_FALLING_EDGE);
+      pin_clock->attach_interrupt(MicronStore::interrupt, this, gpio::INTERRUPT_RISING_EDGE);
     }
 
     void MicronStore::write(uint8_t command, uint8_t repeat) {
@@ -142,7 +142,7 @@ namespace esphome
 
       arg->processor_.next(now_ms);
 
-      arg->processor_.write(&arg->pin_data_out_);
+      //arg->processor_.write(&arg->pin_data_out_);
 
       bool data_bit = arg->pin_data_.digital_read();
 
