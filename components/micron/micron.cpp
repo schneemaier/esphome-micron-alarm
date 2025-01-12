@@ -90,7 +90,7 @@ namespace esphome
         // are we done yet?
         if (this->num_bits_ == MICRON_FRAME_SIZE) {
 
-          this->packet->command = this->buffer_[MICRON_BYTE_COMMAND] >> 1;
+          this->packet->command = this->buffer_[MICRON_BYTE_COMMAND] ; // >> 1; I think i need 8 bits in the commands
           this->packet->status = this->buffer_[MICRON_BYTE_HIGH] << 8 | this->buffer_[MICRON_BYTE_LOW];
 
           return true;
