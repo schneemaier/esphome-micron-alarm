@@ -14,8 +14,8 @@ namespace esphome
     static const uint32_t MICRON_CLOCK_TIMEOUT_MS = 50;
     static const uint32_t MICRON_MIN_US = 20; // originally it was 100;
     static const uint32_t MICRON_MAX_MS = 18; // originally it was 30
-    static const uint8_t MICRON_PACKET_LEN = 4; // 3 for 8 zone;
-    static const uint8_t MICRON_FRAME_SIZE = 32; // 24 for 8 zone;
+    static const uint8_t MICRON_PACKET_LEN = 3;
+    static const uint8_t MICRON_FRAME_SIZE = 24;
     static const uint8_t MICRON_BYTE_COMMAND = 0;
     static const uint8_t MICRON_BYTE_HIGH = 1;
     static const uint8_t MICRON_BYTE_LOW = 2;
