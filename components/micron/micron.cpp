@@ -83,6 +83,7 @@ namespace esphome
       // number of bits received is basically the "state"
       if (this->num_bits_ < MICRON_FRAME_SIZE) {
         // store it while it fits
+        ESP_LOGD(TAG, "NumBits: 0x%02x", this->num_bits_);
         int idx = this->num_bits_ / 8;
         this->buffer_[idx] = (this->buffer_[idx] << 1) | (data ? 1 : 0);
         this->num_bits_++;
