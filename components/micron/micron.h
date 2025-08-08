@@ -16,6 +16,7 @@ namespace esphome
     static const uint32_t MICRON_MAX_MS = 18; // originally it was 30
     static const uint8_t MICRON_PACKET_LEN = 3;
     static const uint8_t MICRON_FRAME_SIZE = 24;
+    static const uint8_t MICRON_FRAME_SIZE = 40; //it seems that the 16 zone version has 40 bits
     static const uint8_t MICRON_BYTE_COMMAND = 0;
     static const uint8_t MICRON_BYTE_HIGH = 1;
     static const uint8_t MICRON_BYTE_LOW = 2;
