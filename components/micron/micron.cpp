@@ -81,7 +81,6 @@ namespace esphome
     bool IRAM_ATTR MicronDataProcessor::decode(uint32_t ms, bool data) {
 
       // number of bits received is basically the "state"
-      ESP_LOGD(TAG, "Bits: 0x%02x", this->num_bits_);
       if (this->num_bits_ < MICRON_FRAME_SIZE) {
         // store it while it fits
         int idx = this->num_bits_ / 8;
