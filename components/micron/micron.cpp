@@ -150,23 +150,29 @@ namespace esphome
       // First idenitfy if the connected panel is 8 or 16 Zone. To do this we have to count the clock cycles: 24 -> 8 Zone, 40 -> 16 Zone
       if (arg->alarm_board_type == MICRON_TYPE_UNKNOWN) {
         // Only count falling edges
+        ESP_LOGD(TAG, "Interrupt");
         if (not arg->pin_clock_.digital_read()) {
+          ESP_LOGD(TAG, "Falling edge");
           arg->id_clock_count++;
           if ((now_us - arg->last_interrupt_us_)  < (MICRON_MAX_MS * 1000)) {
             arg->id_cycle_count--;
+            ESP_LOGD(TAG, "Cycle: %d", arg->id_cycle_count);
             if (arg->id_cycle_count == 0) {
               if (arg->id_clock_count++ == MICRON_FRAME_SIZE_8ZONE) {
                 arg->alarm_board_type = MICRON_TYPE_8ZONE;
                 arg->frame_size = MICRON_FRAME_SIZE_8ZONE;
+                ESP_LOGD(TAG, "8 Zone");
               }
               else if (arg->id_clock_count++ == MICRON_FRAME_SIZE_16ZONE) {
                 arg->alarm_board_type = MICRON_TYPE_16ZONE;
                 arg->frame_size = MICRON_FRAME_SIZE_16ZONE;
+                ESP_LOGD(TAG, "16 Zone");
               }
               else {
                 // identification failed, let's retry
                 arg->id_cycle_count = 4;
                 arg->id_clock_count = 0;
+                ESP_LOGD(TAG, "Failed");
               }
             }
 
