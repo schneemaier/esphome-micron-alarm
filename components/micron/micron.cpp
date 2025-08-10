@@ -146,11 +146,11 @@ namespace esphome
       // Read clock value:
       //  low -> falling edge -> Sens command, count number of clock cycles
       //  high -> rising edge) -> read bits
-
+      ESP_LOGD(TAG, "Interrupt");
       // First idenitfy if the connected panel is 8 or 16 Zone. To do this we have to count the clock cycles: 24 -> 8 Zone, 40 -> 16 Zone
       if (arg->alarm_board_type == MICRON_TYPE_UNKNOWN) {
         // Only count falling edges
-        ESP_LOGD(TAG, "Interrupt");
+        ESP_LOGD(TAG, "Interrupt 1");
         if (not arg->pin_clock_.digital_read()) {
           ESP_LOGD(TAG, "Falling edge");
           arg->id_clock_count++;
