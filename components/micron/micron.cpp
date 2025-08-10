@@ -120,6 +120,7 @@ namespace esphome
       //pin_clock->attach_interrupt(MicronStore::interrupt, this, gpio::INTERRUPT_FALLING_EDGE);
       //pin_clock->attach_interrupt(MicronStore::interrupt, this, gpio::INTERRUPT_RISING_EDGE);
       // TEST: Doing both edges ato support both sending and receiving commands
+      ESP_LOGD(TAG, "Interrupt setup");
       pin_clock->attach_interrupt(MicronStore::interrupt, this, gpio::INTERRUPT_ANY_EDGE);
     }
 
