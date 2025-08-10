@@ -92,10 +92,10 @@ namespace esphome
 
           this->packet->command = this->buffer_[MICRON_BYTE_COMMAND] ; // >> 1; I think i need 8 bits in the commands
           if (frame_size == MICRON_FRAME_SIZE_8ZONE) {
-            this->buffer_[MICRON_BYTE_3] = 0;
-            this->buffer_[MICRON_BYTE_4] = 0;
+            this->buffer_[MICRON_BYTE_DATA_3] = 0;
+            this->buffer_[MICRON_BYTE_DATA_4] = 0;
           }
-          this->packet->status = this->buffer_[MICRON_BYTE_1] << 24 | this->buffer_[MICRON_BYTE_2] << 16 | this->buffer_[MICRON_BYTE_3] << 8 | this->buffer_[MICRON_BYTE_4];
+          this->packet->status = this->buffer_[MICRON_BYTE_DATA_1] << 24 | this->buffer_[MICRON_BYTE_DATA_2] << 16 | this->buffer_[MICRON_BYTE_DATA_3] << 8 | this->buffer_[MICRON_BYTE_DATA_4];
 
           return true;
         }
@@ -148,7 +148,7 @@ namespace esphome
       //  high -> rising edge) -> read bits
 
       // First idenitfy if the connected panel is 8 or 16 Zone. To do this we have to count the clock cycles: 24 -> 8 Zone, 40 -> 16 Zone
-      if (arg->alarm_board_type == NOT_IDENTIFIED) {
+      if (arg->alarm_board_type == MICRON_TYPE_UNKNOWN) {
         // Only count falling edges
         if  not arg->pin_clock_.digital_read() {
           arg->id_clock_count++;
