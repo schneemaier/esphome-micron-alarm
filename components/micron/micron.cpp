@@ -117,11 +117,10 @@ namespace esphome
       // Writing command and reading status should be on falling edge, however reading the commands from the keyboard
       // should happen on rising edge
       // TODO: create a separate interrupt routing just for reading keyboard commands
-      //pin_clock->attach_interrupt(MicronStore::interrupt, this, gpio::INTERRUPT_FALLING_EDGE);
+      pin_clock->attach_interrupt(MicronStore::interrupt, this, gpio::INTERRUPT_FALLING_EDGE);
       //pin_clock->attach_interrupt(MicronStore::interrupt, this, gpio::INTERRUPT_RISING_EDGE);
       // TEST: Doing both edges ato support both sending and receiving commands
-      ESP_LOGD(TAG, "Interrupt setup");
-      pin_clock->attach_interrupt(MicronStore::interrupt, this, gpio::INTERRUPT_ANY_EDGE);
+      //pin_clock->attach_interrupt(MicronStore::interrupt, this, gpio::INTERRUPT_ANY_EDGE);
     }
 
     void MicronStore::write(uint8_t command, uint8_t repeat) {
