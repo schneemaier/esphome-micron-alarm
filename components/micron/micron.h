@@ -93,7 +93,7 @@ namespace esphome
     public:
       void next(uint32_t ms);
       void write(ISRInternalGPIOPin *pin_data_out);
-      bool decode(uint32_t ms, bool data);
+      bool decode(uint32_t ms, bool data, int8_t frame_size);
       MicronPacket *packet = new MicronPacket;
       uint8_t command_out = 0;
       uint8_t command_repeat = 0;
