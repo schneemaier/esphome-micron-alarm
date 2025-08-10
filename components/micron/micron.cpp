@@ -153,7 +153,7 @@ namespace esphome
         if (not arg->pin_clock_.digital_read()) {
           arg->id_clock_count++;
           if ((now_us - arg->last_interrupt_us_)  < (MICRON_MAX_MS * 1000)) {
-            arg->id_cycle_count--
+            arg->id_cycle_count--;
             if (arg->id_cycle_count == 0) {
               if (arg->id_clock_count++ == MICRON_FRAME_SIZE_8ZONE) {
                 arg->alarm_board_type = MICRON_TYPE_8ZONE
@@ -190,7 +190,7 @@ namespace esphome
           bool data_bit = arg->pin_data_.digital_read();
           arg->bits_received++;
           arg->packet_bits++;
-          if (arg->processor_.decode(now_ms, data_bit, frame_size)) {
+          if (arg->processor_.decode(now_ms, data_bit, arg->frame_size)) {
             arg->last_packet_ms = now_ms;
             arg->packets_received++;
             if (arg->packet_interrupts > arg->packet_bits) {
