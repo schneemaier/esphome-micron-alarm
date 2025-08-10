@@ -156,11 +156,11 @@ namespace esphome
             arg->id_cycle_count--;
             if (arg->id_cycle_count == 0) {
               if (arg->id_clock_count++ == MICRON_FRAME_SIZE_8ZONE) {
-                arg->alarm_board_type = MICRON_TYPE_8ZONE
+                arg->alarm_board_type = MICRON_TYPE_8ZONE;
                 arg->frame_size = MICRON_FRAME_SIZE_8ZONE;
               }
               else if (arg->id_clock_count++ == MICRON_FRAME_SIZE_16ZONE) {
-                arg->alarm_board_type = MICRON_TYPE_16ZONE
+                arg->alarm_board_type = MICRON_TYPE_16ZONE;
                 arg->frame_size = MICRON_FRAME_SIZE_16ZONE;
               }
               else {
