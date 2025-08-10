@@ -10,19 +10,36 @@ namespace esphome
 {
   namespace micron
   {
+    // Micron board type constants
+    static const uint8_t MICRON_TYPE_UNKNOWN = 0;
+    static const uint8_t MICRON_TYPE_8ZONE   = 8;
+    static const uint8_t MICRON_TYPE_16ZONE  = 16;
 
+    // TIming variables
     static const uint32_t MICRON_CLOCK_TIMEOUT_MS = 50;
     static const uint32_t MICRON_MIN_US = 20; // originally it was 100;
     static const uint32_t MICRON_MAX_MS = 18; // originally it was 30
-    static const uint8_t MICRON_PACKET_LEN = 3;
-    //static const uint8_t MICRON_FRAME_SIZE = 24;
-    static const uint8_t MICRON_FRAME_SIZE = 40; //it seems that the 16 zone version has 40 bits
-    static const uint8_t MICRON_BYTE_COMMAND = 0;
-    static const uint8_t MICRON_BYTE_HIGH = 1;
-    static const uint8_t MICRON_BYTE_LOW = 2;
+    
+    static const uint8_t MICRON_PACKET_LEN = 5; //was 3 but changed to 5 to support 16 zone version
+    // Frame and packet length size is different for the 8 and 16 Zone versions
+    static const uint8_t MICRON_FRAME_SIZE_8ZONE = 24;
+    static const uint8_t MICRON_PACKET_LEN_8ZONE = 3;
+    static const uint8_t MICRON_FRAME_SIZE_16ZONE = 40;
+    static const uint8_t MICRON_PACKET_LEN_16ZONE = 5;
 
     static const uint8_t MICRON_COMMAND_FRAME_SIZE = 8; // was 7 originally, but 8 bit commands are required
+    // Old values for 8 zone verison
+    // static const uint8_t MICRON_BYTE_HIGH = 1;
+    // static const uint8_t MICRON_BYTE_LOW = 2;
+    // changes for 16 zone support
+    static const uint8_t MICRON_BYTE_COMMAND = 0;
+    static const uint8_t MICRON_BYTE_DATA_1 = 1;
+    static const uint8_t MICRON_BYTE_DATA_2 = 2;
+    // 3 and 4 only needed for the 16 zone version
+    static const uint8_t MICRON_BYTE_DATA_3 = 3;
+    static const uint8_t MICRON_BYTE_DATA_4 = 4;
 
+    //Keypad data values
     static const uint16_t MICRON_KEYPAD_1 = 0x48;
     static const uint16_t MICRON_KEYPAD_2 = 0x28;
     static const uint16_t MICRON_KEYPAD_3 = 0x18;
@@ -35,11 +52,12 @@ namespace esphome
     static const uint16_t MICRON_KEYPAD_STAR = 0x41;
     static const uint16_t MICRON_KEYPAD_0 = 0x21;
     static const uint16_t MICRON_KEYPAD_HASH = 0x11;
-    // micron LED keyboard codes for function keys
     static const uint16_t MICRON_KEYPAD_F1 = 0x09;
     static const uint16_t MICRON_KEYPAD_F2 = 0x0a;
     static const uint16_t MICRON_KEYPAD_F3 = 0x0b;
 
+    // Zone mask values
+    // currently only the 8 zone versions are identified
     static const uint16_t MICRON_ZONE_1_MASK = 0x0001;
     static const uint16_t MICRON_ZONE_2_MASK = 0x0002;
     static const uint16_t MICRON_ZONE_3_MASK = 0x0004;
@@ -66,7 +84,9 @@ namespace esphome
 
     struct MicronPacket {
       uint8_t command;
-      uint16_t status;
+      //uint16_t status;
+      // status is changed to 32bit to support 16 zone version
+      uint32_t status;
     };
 
     class MicronDataProcessor {
@@ -80,7 +100,7 @@ namespace esphome
       uint8_t remaining_command_writes = 0;
 
     protected:
-      uint8_t buffer_[MICRON_PACKET_LEN];
+      uint8_t buffer_[MICRON_PACKET_LEN_16ZONE]; // reserved for the 16 zone version 
       int num_bits_ = 0;
       uint32_t prev_ms_;
     };
@@ -88,7 +108,9 @@ namespace esphome
     struct MicronStore {
     public:
       uint8_t command;
-      uint16_t status;
+      //uint16_t status;
+      // status is changed to 32bit to support 16 zone version
+      uint32_t status;
       uint16_t siren; //bit 0 will store siren input status
 
       uint32_t interrupts = 0;
@@ -98,10 +120,13 @@ namespace esphome
       uint32_t packets_received = 0;
       uint32_t packets_with_interference = 0;
       uint32_t commands_sent = 0;
+      uint8_t alarm_board_type = MICRON_TYPE_UNKNOWN;
+      // variables used to identify the bord type
+      uint8_t id_cycle_count = 4; // 4 cycles are used to identify the board type
+      uint8_t id_clock_count = 0; // count of clock cycles per packet
 
       uint32_t last_packet_ms;
 
-      //void setup(InternalGPIOPin *pin_clock, InternalGPIOPin *pin_data, InternalGPIOPin *pin_data_out);
       void setup(InternalGPIOPin *pin_clock, InternalGPIOPin *pin_data, InternalGPIOPin *pin_data_out, InternalGPIOPin *pin_siren, InternalGPIOPin *pin_siren_out);
       void write(uint8_t command, uint8_t repeat = 1);
       static void interrupt(MicronStore *arg);

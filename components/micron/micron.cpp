@@ -78,29 +78,31 @@ namespace esphome
       //pin_data_out->digital_write(this->num_bits_ % 2 == 0);
     }
 
-    bool IRAM_ATTR MicronDataProcessor::decode(uint32_t ms, bool data) {
+    bool IRAM_ATTR MicronDataProcessor::decode(uint32_t ms, bool data, int8_t frame_size) {
 
       // number of bits received is basically the "state"
-      if (this->num_bits_ < MICRON_FRAME_SIZE) {
+      if (this->num_bits_ < frame_size) {
         // store it while it fits
         int idx = this->num_bits_ / 8;
         this->buffer_[idx] = (this->buffer_[idx] << 1) | (data ? 1 : 0);
         this->num_bits_++;
 
         // are we done yet?
-        if (this->num_bits_ == MICRON_FRAME_SIZE) {
+        if (this->num_bits_ == frame_size) {
 
           this->packet->command = this->buffer_[MICRON_BYTE_COMMAND] ; // >> 1; I think i need 8 bits in the commands
-          this->packet->status = this->buffer_[MICRON_BYTE_HIGH] << 8 | this->buffer_[MICRON_BYTE_LOW];
+          if (frame_size == MICRON_FRAME_SIZE_8ZONE) {
+            this->buffer_[MICRON_BYTE_3] = 0;
+            this->buffer_[MICRON_BYTE_4] = 0;
+          }
+          this->packet->status = this->buffer_[MICRON_BYTE_1] << 24 | this->buffer_[MICRON_BYTE_2] << 16 | this->buffer_[MICRON_BYTE_3] << 8 | this->buffer_[MICRON_BYTE_4];
 
           return true;
         }
       }
-
       return false;
     }
 
-    //void MicronStore::setup(InternalGPIOPin *pin_clock, InternalGPIOPin *pin_data, InternalGPIOPin *pin_data_out) {
     void MicronStore::setup(InternalGPIOPin *pin_clock, InternalGPIOPin *pin_data, InternalGPIOPin *pin_data_out, InternalGPIOPin *pin_siren, InternalGPIOPin *pin_siren_out) {
       pin_clock->setup();
       pin_data->setup();
@@ -115,8 +117,10 @@ namespace esphome
       // Writing command and reading status should be on falling edge, however reading the commands from the keyboard
       // should happen on rising edge
       // TODO: create a separate interrupt routing just for reading keyboard commands
-      pin_clock->attach_interrupt(MicronStore::interrupt, this, gpio::INTERRUPT_FALLING_EDGE);
+      //pin_clock->attach_interrupt(MicronStore::interrupt, this, gpio::INTERRUPT_FALLING_EDGE);
       //pin_clock->attach_interrupt(MicronStore::interrupt, this, gpio::INTERRUPT_RISING_EDGE);
+      // TEST: Doing both edges ato support both sending and receiving commands
+      pin_clock->attach_interrupt(MicronStore::interrupt, this, gpio::INTERRUPT_ANY_EDGE);
     }
 
     void MicronStore::write(uint8_t command, uint8_t repeat) {
@@ -139,29 +143,62 @@ namespace esphome
         return;
       }
 
-      arg->last_interrupt_us_ = now_us;
+      // Read clock value:
+      //  low -> falling edge -> Sens command, count number of clock cycles
+      //  high -> rising edge) -> read bits
 
-      auto now_ms = millis();
+      // First idenitfy if the connected panel is 8 or 16 Zone. To do this we have to count the clock cycles: 24 -> 8 Zone, 40 -> 16 Zone
+      if (arg->alarm_board_type == NOT_IDENTIFIED) {
+        // Only count falling edges
+        if  not arg->pin_clock_.digital_read() {
+          arg->id_clock_count++;
+          if ((now_us - arg->last_interrupt_us_)  < (MICRON_MAX_MS * 1000)) {
+            arg->id_cycle_count--
+            if (arg->id_cycle_count == 0) {
+              if (arg->id_clock_count++ == MICRON_FRAME_SIZE_8ZONE) {
+                arg->alarm_board_type = MICRON_TYPE_8ZONE
+              }
+              else if (arg->id_clock_count++ == MICRON_FRAME_SIZE_16ZONE) {
+                arg->alarm_board_type = MICRON_TYPE_16ZONE
+              }
+              else {
+                // identification failed, let's retry
+                arg->id_cycle_count = 4;
+                arg->id_clock_count = 0;
+              }
+            }
 
-      arg->processor_.next(now_ms);
-
-      arg->processor_.write(&arg->pin_data_out_);
-
-      bool data_bit = arg->pin_data_.digital_read();
-
-      arg->bits_received++;
-      arg->packet_bits++;
-
-      if (arg->processor_.decode(now_ms, data_bit)) {
-        arg->last_packet_ms = now_ms;
-        arg->packets_received++;
-        if (arg->packet_interrupts > arg->packet_bits) {
-          arg->packets_with_interference++;
+          }
+        };
+      }
+      else {
+        // real work happens here
+        if  not arg->pin_clock_.digital_read() {
+          // on falling edge
+          arg->last_interrupt_us_ = now_us;
+          auto now_ms = millis();
+          // check if new rame started
+          arg->processor_.next(now_ms);
+          // write command
+          arg->processor_.write(&arg->pin_data_out_);
         }
-        arg->packet_interrupts = 0;
-        arg->packet_bits = 0;
-        arg->set_data_(arg->processor_.packet);
-      
+        else {
+          // on rising edge
+          // data read happens here
+          bool data_bit = arg->pin_data_.digital_read();
+          arg->bits_received++;
+          arg->packet_bits++;
+          if (arg->processor_.decode(now_ms, data_bit)) {
+            arg->last_packet_ms = now_ms;
+            arg->packets_received++;
+            if (arg->packet_interrupts > arg->packet_bits) {
+              arg->packets_with_interference++;
+            }
+            arg->packet_interrupts = 0;
+            arg->packet_bits = 0;
+            arg->set_data_(arg->processor_.packet);
+          }
+        }
         // siren handling
         bool data_bit = arg->pin_siren_.digital_read();
         if (data_bit) {
@@ -202,7 +239,7 @@ namespace esphome
     void MicronComponent::setup()
     {
       ESP_LOGCONFIG(TAG, "Setting up Micron...");
-      
+
       //this->store_.setup(this->pin_clock_, this->pin_data_, this->pin_data_out_);
       this->store_.setup(this->pin_clock_, this->pin_data_, this->pin_data_out_, this->pin_siren_, this->pin_siren_out_);
       ESP_LOGCONFIG(TAG, "Setting up Micron...COMPLETED");
@@ -312,7 +349,7 @@ namespace esphome
     }
 
     void MicronComponent::update() {
-      ESP_LOGD(TAG, "Command: 0x%02x,  Status: 0x%04x", this->store_.command, this->store_.status);
+      ESP_LOGD(TAG, "Command: 0x%02x,  Status: 0x%08x", this->store_.command, this->store_.status);
       ESP_LOGD(TAG, "Interrupts: %d, Bits: %d, Packets: %d, Packets Fixed: %d, Commands Sent: %d",
         this->store_.interrupts,
         this->store_.bits_received,
