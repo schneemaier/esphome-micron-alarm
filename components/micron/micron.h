@@ -121,6 +121,7 @@ namespace esphome
       uint32_t packets_with_interference = 0;
       uint32_t commands_sent = 0;
       uint8_t alarm_board_type = MICRON_TYPE_UNKNOWN;
+      uint8_t frame_size = 0;
       // variables used to identify the bord type
       uint8_t id_cycle_count = 4; // 4 cycles are used to identify the board type
       uint8_t id_clock_count = 0; // count of clock cycles per packet
