@@ -150,7 +150,7 @@ namespace esphome
       // First idenitfy if the connected panel is 8 or 16 Zone. To do this we have to count the clock cycles: 24 -> 8 Zone, 40 -> 16 Zone
       if (arg->alarm_board_type == MICRON_TYPE_UNKNOWN) {
         // Only count falling edges
-        if  not arg->pin_clock_.digital_read() {
+        if (not arg->pin_clock_.digital_read()) {
           arg->id_clock_count++;
           if ((now_us - arg->last_interrupt_us_)  < (MICRON_MAX_MS * 1000)) {
             arg->id_cycle_count--
@@ -175,10 +175,10 @@ namespace esphome
       }
       else {
         // real work happens here
-        if  not arg->pin_clock_.digital_read() {
+        auto now_ms = millis();
+        if (not arg->pin_clock_.digital_read()) {
           // on falling edge
           arg->last_interrupt_us_ = now_us;
-          auto now_ms = millis();
           // check if new rame started
           arg->processor_.next(now_ms);
           // write command
