@@ -133,6 +133,7 @@ namespace esphome
     void IRAM_ATTR MicronStore::interrupt(MicronStore *arg) {
       arg->interrupts++;
       arg->packet_interrupts++;
+      uint8_t cycles[4]
 
       uint32_t now_us = micros();
 
@@ -154,8 +155,9 @@ namespace esphome
         if (not clock_bit) {
           // ESP_LOGD(TAG, "Falling EDGE");
           arg->id_clock_count++;
-          ESP_LOGD(TAG, "now: %d, last: %d, max: %d", now_us, arg->last_interrupt_us_, MICRON_MAX_MS * 1000);
+          //ESP_LOGD(TAG, "now: %d, last: %d, max: %d", now_us, arg->last_interrupt_us_, MICRON_MAX_MS * 1000);
           if ((now_us - arg->last_interrupt_us_)  < (MICRON_MAX_MS * 1000)) {
+            cycles[arg->id_cycle_count] = arg->id_clock_count;
             arg->id_cycle_count--;
             ESP_LOGD(TAG, "Cycle complete");
             if (arg->id_cycle_count == 0) {
@@ -176,6 +178,7 @@ namespace esphome
                 ESP_LOGD(TAG, "Failed");
               }
             }
+            arg->id_clock_count;
           }
           arg->last_interrupt_us_ = now_us;
           ESP_LOGD(TAG, "Last int: %d", arg->last_interrupt_us_);
