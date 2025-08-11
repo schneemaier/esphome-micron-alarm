@@ -254,10 +254,10 @@ namespace esphome
       ESP_LOGCONFIG(TAG, "Setting up Micron...");
 
       //this->store_.setup(this->pin_clock_, this->pin_data_, this->pin_data_out_);
-      this->store_.setup(this->pin_clock_, this->pin_data_, this->pin_data_out_, this->pin_siren_, this->pin_siren_out_);
+      //this->store_.setup(this->pin_clock_, this->pin_data_, this->pin_data_out_, this->pin_siren_, this->pin_siren_out_);
       ESP_LOGCONFIG(TAG, "Setting up Micron...COMPLETED");
 
-      // this->pin_clock_->attach_interrupt(MicronStore::gpio_intr, &this->store_, gpio::INTERRUPT_ANY_EDGE);
+      this->pin_clock_->attach_interrupt(MicronStore::gpio_intr, &this->store_, gpio::INTERRUPT_ANY_EDGE);
     }
 
     void MicronComponent::dump_config() {
