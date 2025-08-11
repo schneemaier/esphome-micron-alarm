@@ -150,10 +150,11 @@ namespace esphome
       bool clock_bit = arg->pin_clock_.digital_read();
       if (arg->alarm_board_type == MICRON_TYPE_UNKNOWN) {
         // Only count falling edges
-        ESP_LOGD(TAG, "Clock bit: %d", clock_bit);
+        // ESP_LOGD(TAG, "Clock bit: %d", clock_bit);
         if (not clock_bit) {
-          ESP_LOGD(TAG, "Falling EDGE");
+          // ESP_LOGD(TAG, "Falling EDGE");
           arg->id_clock_count++;
+          ESP_LOGD(TAG, "now: %d, last: %d, max: %d", now_us, arg->last_interrupt_us_, MICRON_MAX_MS * 1000);
           if ((now_us - arg->last_interrupt_us_)  < (MICRON_MAX_MS * 1000)) {
             arg->id_cycle_count--;
             if (arg->id_cycle_count == 0) {
