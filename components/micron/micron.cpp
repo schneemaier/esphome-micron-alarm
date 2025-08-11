@@ -150,17 +150,19 @@ namespace esphome
       bool clock_bit = arg->pin_clock_.digital_read();
       if (arg->alarm_board_type == MICRON_TYPE_UNKNOWN) {
         // Only count falling edges
+        ESP_LOGD(TAG, "Clock bit: %d", clock_bit);
         if (not clock_bit) {
+          ESP_LOGD(TAG, "Falling EDGE");
           arg->id_clock_count++;
           if ((now_us - arg->last_interrupt_us_)  < (MICRON_MAX_MS * 1000)) {
             arg->id_cycle_count--;
             if (arg->id_cycle_count == 0) {
-              if (arg->id_clock_count++ == MICRON_FRAME_SIZE_8ZONE) {
+              if (arg->id_clock_count == MICRON_FRAME_SIZE_8ZONE) {
                 arg->alarm_board_type = MICRON_TYPE_8ZONE;
                 arg->frame_size = MICRON_FRAME_SIZE_8ZONE;
                 ESP_LOGD(TAG, "8 Zone");
               }
-              else if (arg->id_clock_count++ == MICRON_FRAME_SIZE_16ZONE) {
+              else if (arg->id_clock_count == MICRON_FRAME_SIZE_16ZONE) {
                 arg->alarm_board_type = MICRON_TYPE_16ZONE;
                 arg->frame_size = MICRON_FRAME_SIZE_16ZONE;
                 ESP_LOGD(TAG, "16 Zone");
