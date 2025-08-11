@@ -146,17 +146,14 @@ namespace esphome
       // Read clock value:
       //  low -> falling edge -> Sens command, count number of clock cycles
       //  high -> rising edge) -> read bits
-      ESP_LOGD(TAG, "Interrupt");
       // First idenitfy if the connected panel is 8 or 16 Zone. To do this we have to count the clock cycles: 24 -> 8 Zone, 40 -> 16 Zone
+      bool clock_bit = arg->pin_clock_.digital_read();
       if (arg->alarm_board_type == MICRON_TYPE_UNKNOWN) {
         // Only count falling edges
-        ESP_LOGD(TAG, "Interrupt 1");
-        if (not arg->pin_clock_.digital_read()) {
-          ESP_LOGD(TAG, "Falling edge");
+        if (not clock_bit) {
           arg->id_clock_count++;
           if ((now_us - arg->last_interrupt_us_)  < (MICRON_MAX_MS * 1000)) {
             arg->id_cycle_count--;
-            ESP_LOGD(TAG, "Cycle: %d", arg->id_cycle_count);
             if (arg->id_cycle_count == 0) {
               if (arg->id_clock_count++ == MICRON_FRAME_SIZE_8ZONE) {
                 arg->alarm_board_type = MICRON_TYPE_8ZONE;
@@ -175,14 +172,13 @@ namespace esphome
                 ESP_LOGD(TAG, "Failed");
               }
             }
-
           }
         };
       }
       else {
         // real work happens here
         auto now_ms = millis();
-        if (not arg->pin_clock_.digital_read()) {
+        if (not clock_bit) {
           // on falling edge
           arg->last_interrupt_us_ = now_us;
           // check if new rame started
