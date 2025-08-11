@@ -178,7 +178,7 @@ namespace esphome
                 ESP_LOGD(TAG, "Failed");
               }
             }
-            arg->id_clock_count;
+            arg->id_clock_count = 0;
           }
           arg->last_interrupt_us_ = now_us;
           ESP_LOGD(TAG, "Last int: %d", arg->last_interrupt_us_);
