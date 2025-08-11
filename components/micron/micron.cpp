@@ -133,7 +133,7 @@ namespace esphome
     void IRAM_ATTR MicronStore::interrupt(MicronStore *arg) {
       arg->interrupts++;
       arg->packet_interrupts++;
-      uint8_t cycles[4]
+      uint8_t cycles[4];
 
       uint32_t now_us = micros();
 
