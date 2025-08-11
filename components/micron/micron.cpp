@@ -369,7 +369,8 @@ namespace esphome
         this->store_.packets_received,
         this->store_.packets_with_interference,
         this->store_.commands_sent);
-      ESP_LOGD(TAG, "Clock: %d, Cycle: %d",
+      ESP_LOGD(TAG, "Board. %d, Clock: %d, Cycle: %d",
+        this->store_.alarm_board_type,
         this->store_.id_clock_count,
         this->store_.id_cycle_count);
       //ESP_LOGD(TAG, "Write stats: 0x%02x  repeat %d bits %d", this->store_.processor_.command_out, this->store_.processor_.command_repeat, this->store_.processor_.remaining_command_writes);
