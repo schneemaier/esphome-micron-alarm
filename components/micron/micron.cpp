@@ -158,8 +158,8 @@ namespace esphome
           //ESP_LOGD(TAG, "now: %d, last: %d, max: %d", now_us, arg->last_interrupt_us_, MICRON_MAX_MS * 1000);
           if ((now_us - arg->last_interrupt_us_)  < (MICRON_MAX_MS * 1000)) {
             cycles[arg->id_cycle_count] = arg->id_clock_count;
+            ESP_LOGD(TAG, "Cycle complete, cycle: %d, clock: %d", arg->id_cycle_count, arg->id_clock_count);
             arg->id_cycle_count--;
-            ESP_LOGD(TAG, "Cycle complete");
             if (arg->id_cycle_count == 0) {
               if (arg->id_clock_count == MICRON_FRAME_SIZE_8ZONE) {
                 arg->alarm_board_type = MICRON_TYPE_8ZONE;
@@ -181,7 +181,7 @@ namespace esphome
             arg->id_clock_count = 0;
           }
           arg->last_interrupt_us_ = now_us;
-          ESP_LOGD(TAG, "Last int: %d", arg->last_interrupt_us_);
+          //ESP_LOGD(TAG, "Last int: %d", arg->last_interrupt_us_);
         };
       }
       else {
