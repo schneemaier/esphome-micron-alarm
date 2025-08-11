@@ -176,6 +176,7 @@ namespace esphome
               }
             }
           }
+          arg->last_interrupt_us_ = now_us;
         };
       }
       else {
