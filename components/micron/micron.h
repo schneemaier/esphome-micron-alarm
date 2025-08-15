@@ -58,22 +58,22 @@ namespace esphome
 
     // Zone mask values
     // currently only the 8 zone versions are identified
-    static const uint16_t MICRON_ZONE_1_MASK = 0x00010000;
-    static const uint16_t MICRON_ZONE_2_MASK = 0x00020000;
-    static const uint16_t MICRON_ZONE_3_MASK = 0x00040000;
-    static const uint16_t MICRON_ZONE_4_MASK = 0x00080000;
-    static const uint16_t MICRON_ZONE_5_MASK = 0x00100000;
-    static const uint16_t MICRON_ZONE_6_MASK = 0x00200000;
-    static const uint16_t MICRON_ZONE_A_MASK = 0x00400000;
-    static const uint16_t MICRON_KEY_BEEP_3_MASK = 0x00800000;
-    static const uint16_t MICRON_ZONE_7_MASK = 0x01000000;
-    static const uint16_t MICRON_ZONE_8_MASK = 0x02000000;
-    static const uint16_t MICRON_NIGHT_ARMED_MASK = 0x04000000;
-    static const uint16_t MICRON_0800_MASK = 0x08000000;
-    static const uint16_t MICRON_BATTERY_MASK = 0x10000000;
-    static const uint16_t MICRON_M_MASK = 0x20000000;
-    static const uint16_t MICRON_ZONE_B_MASK = 0x40000000;
-    static const uint16_t MICRON_KEY_BEEP_1_MASK = 0x80000000;
+    static const uint32_t MICRON_ZONE_1_MASK = 0x00010000;
+    static const uint32_t MICRON_ZONE_2_MASK = 0x00020000;
+    static const uint32_t MICRON_ZONE_3_MASK = 0x00040000;
+    static const uint32_t MICRON_ZONE_4_MASK = 0x00080000;
+    static const uint32_t MICRON_ZONE_5_MASK = 0x00100000;
+    static const uint32_t MICRON_ZONE_6_MASK = 0x00200000;
+    static const uint32_t MICRON_ZONE_A_MASK = 0x00400000;
+    static const uint32_t MICRON_KEY_BEEP_3_MASK = 0x00800000;
+    static const uint32_t MICRON_ZONE_7_MASK = 0x01000000;
+    static const uint32_t MICRON_ZONE_8_MASK = 0x02000000;
+    static const uint32_t MICRON_NIGHT_ARMED_MASK = 0x04000000;
+    static const uint32_t MICRON_0800_MASK = 0x08000000;
+    static const uint32_t MICRON_BATTERY_MASK = 0x10000000;
+    static const uint32_t MICRON_M_MASK = 0x20000000;
+    static const uint32_t MICRON_ZONE_B_MASK = 0x40000000;
+    static const uint32_t MICRON_KEY_BEEP_1_MASK = 0x80000000;
 
     static const uint16_t MICRON_SIREN_MASK = 0x0001;
 
