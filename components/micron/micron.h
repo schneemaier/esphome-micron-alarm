@@ -58,22 +58,22 @@ namespace esphome
 
     // Zone mask values
     // currently only the 8 zone versions are identified
-    static const uint16_t MICRON_ZONE_1_MASK = 0x0001;
-    static const uint16_t MICRON_ZONE_2_MASK = 0x0002;
-    static const uint16_t MICRON_ZONE_3_MASK = 0x0004;
-    static const uint16_t MICRON_ZONE_4_MASK = 0x0008;
-    static const uint16_t MICRON_ZONE_5_MASK = 0x0010;
-    static const uint16_t MICRON_ZONE_6_MASK = 0x0020;
-    static const uint16_t MICRON_ZONE_A_MASK = 0x0040;
-    static const uint16_t MICRON_KEY_BEEP_3_MASK = 0x0080;
-    static const uint16_t MICRON_ZONE_7_MASK = 0x0100;
-    static const uint16_t MICRON_ZONE_8_MASK = 0x0200;
-    static const uint16_t MICRON_NIGHT_ARMED_MASK = 0x0400;
-    static const uint16_t MICRON_0800_MASK = 0x0800;
-    static const uint16_t MICRON_BATTERY_MASK = 0x1000;
-    static const uint16_t MICRON_M_MASK = 0x2000;
-    static const uint16_t MICRON_ZONE_B_MASK = 0x4000;
-    static const uint16_t MICRON_KEY_BEEP_1_MASK = 0x8000;
+    static const uint16_t MICRON_ZONE_1_MASK = 0x00010000;
+    static const uint16_t MICRON_ZONE_2_MASK = 0x00020000;
+    static const uint16_t MICRON_ZONE_3_MASK = 0x00040000;
+    static const uint16_t MICRON_ZONE_4_MASK = 0x00080000;
+    static const uint16_t MICRON_ZONE_5_MASK = 0x00100000;
+    static const uint16_t MICRON_ZONE_6_MASK = 0x00200000;
+    static const uint16_t MICRON_ZONE_A_MASK = 0x00400000;
+    static const uint16_t MICRON_KEY_BEEP_3_MASK = 0x00800000;
+    static const uint16_t MICRON_ZONE_7_MASK = 0x01000000;
+    static const uint16_t MICRON_ZONE_8_MASK = 0x02000000;
+    static const uint16_t MICRON_NIGHT_ARMED_MASK = 0x04000000;
+    static const uint16_t MICRON_0800_MASK = 0x08000000;
+    static const uint16_t MICRON_BATTERY_MASK = 0x10000000;
+    static const uint16_t MICRON_M_MASK = 0x20000000;
+    static const uint16_t MICRON_ZONE_B_MASK = 0x40000000;
+    static const uint16_t MICRON_KEY_BEEP_1_MASK = 0x80000000;
 
     static const uint16_t MICRON_SIREN_MASK = 0x0001;
 
