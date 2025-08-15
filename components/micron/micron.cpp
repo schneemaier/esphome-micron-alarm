@@ -137,12 +137,12 @@ namespace esphome
 
       uint32_t now_us = micros();
 
-      //if ((now_us - arg->last_interrupt_us_) < MICRON_MIN_US) {
-        // too shorter delay between interrupts.
+      if ((now_us - arg->last_interrupt_us_) < MICRON_MIN_US) {
+        //too shorter delay between interrupts.
         // this is caused by us sending command back to the panel,
         // which seems to cause and issue on the clock line
-      //  return;
-      //}
+        return;
+      }
 
       // Read clock value:
       //  low -> falling edge -> Sens command, count number of clock cycles
