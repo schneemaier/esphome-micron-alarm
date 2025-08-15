@@ -187,7 +187,7 @@ namespace esphome
       else {
         // real work happens here
         auto now_ms = millis();
-        if (not clock_bit) {
+        if (clock_bit == 0) {
           // on falling edge
           arg->last_interrupt_us_ = now_us;
           // check if new rame started
