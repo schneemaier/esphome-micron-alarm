@@ -152,7 +152,7 @@ namespace esphome
       if (arg->alarm_board_type != MICRON_TYPE_UNKNOWN) {
         // real work happens here
         auto now_ms = millis();
-        if (clock_bit) {
+        if (not clock_bit) {
           // on rising edge
           // data read happens here
           // bool data_bit = arg->pin_data_.digital_read();
