@@ -149,6 +149,7 @@ namespace esphome
       //  high -> rising edge) -> read bits
       // First idenitfy if the connected panel is 8 or 16 Zone. To do this we have to count the clock cycles: 24 -> 8 Zone, 40 -> 16 Zone
       bool clock_bit = arg->pin_clock_.digital_read();
+      bool data_bit = arg->pin_data_.digital_read();
       if (arg->alarm_board_type == MICRON_TYPE_UNKNOWN) {
         // Only count falling edges
         // ESP_LOGD(TAG, "Clock bit: %d", clock_bit);
@@ -198,7 +199,7 @@ namespace esphome
         else {
           // on rising edge
           // data read happens here
-          bool data_bit = arg->pin_data_.digital_read();
+          // bool data_bit = arg->pin_data_.digital_read();
           arg->bits_received++;
           arg->packet_bits++;
           if (arg->processor_.decode(now_ms, data_bit, arg->frame_size)) {
