@@ -119,7 +119,7 @@ namespace esphome
       // TODO: create a separate interrupt routing just for reading keyboard commands
       //pin_clock->attach_interrupt(MicronStore::interrupt, this, gpio::INTERRUPT_FALLING_EDGE);
       //pin_clock->attach_interrupt(MicronStore::interrupt, this, gpio::INTERRUPT_RISING_EDGE);
-      // TEST: Doing both edges ato support both sending and receiving commands
+      // TEST: Doing both edges to support both sending and receiving commands
       pin_clock->attach_interrupt(MicronStore::interrupt, this, gpio::INTERRUPT_ANY_EDGE);
     }
 
@@ -152,7 +152,7 @@ namespace esphome
       if (arg->alarm_board_type != MICRON_TYPE_UNKNOWN) {
         // real work happens here
         auto now_ms = millis();
-        if (not clock_bit) {
+        if (clock_bit) {
           // on rising edge
           // data read happens here
           // bool data_bit = arg->pin_data_.digital_read();
@@ -189,7 +189,8 @@ namespace esphome
       else {
         // Only count falling edges
         // ESP_LOGD(TAG, "Clock bit: %d", clock_bit);
-        if (not clock_bit) {
+        //if (not clock_bit) {
+        if (clock_bit) { // test line
           // ESP_LOGD(TAG, "Falling EDGE");
           arg->id_clock_count++;
           //ESP_LOGD(TAG, "now: %d, last: %d, max: %d", now_us, arg->last_interrupt_us_, MICRON_MAX_MS * 1000);
