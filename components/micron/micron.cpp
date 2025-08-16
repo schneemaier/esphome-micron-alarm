@@ -150,42 +150,7 @@ namespace esphome
       // First idenitfy if the connected panel is 8 or 16 Zone. To do this we have to count the clock cycles: 24 -> 8 Zone, 40 -> 16 Zone
       bool clock_bit = arg->pin_clock_.digital_read();
       bool data_bit = arg->pin_data_.digital_read();
-      if (arg->alarm_board_type == MICRON_TYPE_UNKNOWN) {
-        // Only count falling edges
-        // ESP_LOGD(TAG, "Clock bit: %d", clock_bit);
-        if (not clock_bit) {
-          // ESP_LOGD(TAG, "Falling EDGE");
-          arg->id_clock_count++;
-          //ESP_LOGD(TAG, "now: %d, last: %d, max: %d", now_us, arg->last_interrupt_us_, MICRON_MAX_MS * 1000);
-          if ((now_us - arg->last_interrupt_us_)  > (MICRON_MAX_MS * 1000)) {
-            cycles[arg->id_cycle_count] = arg->id_clock_count;
-            ESP_LOGD(TAG, "Cycle complete, cycle: %d, clock: %d", arg->id_cycle_count, arg->id_clock_count);
-            arg->id_cycle_count--;
-            if (arg->id_cycle_count == 0) {
-              if (arg->id_clock_count == MICRON_FRAME_SIZE_8ZONE) {
-                arg->alarm_board_type = MICRON_TYPE_8ZONE;
-                arg->frame_size = MICRON_FRAME_SIZE_8ZONE;
-                ESP_LOGD(TAG, "8 Zone");
-              }
-              else if (arg->id_clock_count == MICRON_FRAME_SIZE_16ZONE) {
-                arg->alarm_board_type = MICRON_TYPE_16ZONE;
-                arg->frame_size = MICRON_FRAME_SIZE_16ZONE;
-                ESP_LOGD(TAG, "16 Zone");
-              }
-              else {
-                // identification failed, let's retry
-                arg->id_cycle_count = 4;
-                arg->id_clock_count = 0;
-                ESP_LOGD(TAG, "Failed");
-              }
-            }
-            arg->id_clock_count = 0;
-          }
-          arg->last_interrupt_us_ = now_us;
-          //ESP_LOGD(TAG, "Last int: %d", arg->last_interrupt_us_);
-        };
-      }
-      else {
+      if (arg->alarm_board_type != MICRON_TYPE_UNKNOWN) {
         // real work happens here
         auto now_ms = millis();
         if (clock_bit == 0) {
@@ -221,6 +186,41 @@ namespace esphome
         else {
           arg->siren = 0x0000;
         }
+      }
+      else {
+        // Only count falling edges
+        // ESP_LOGD(TAG, "Clock bit: %d", clock_bit);
+        if (not clock_bit) {
+          // ESP_LOGD(TAG, "Falling EDGE");
+          arg->id_clock_count++;
+          //ESP_LOGD(TAG, "now: %d, last: %d, max: %d", now_us, arg->last_interrupt_us_, MICRON_MAX_MS * 1000);
+          if ((now_us - arg->last_interrupt_us_)  > (MICRON_MAX_MS * 1000)) {
+            cycles[arg->id_cycle_count] = arg->id_clock_count;
+            ESP_LOGD(TAG, "Cycle complete, cycle: %d, clock: %d", arg->id_cycle_count, arg->id_clock_count);
+            arg->id_cycle_count--;
+            if (arg->id_cycle_count == 0) {
+              if (arg->id_clock_count == MICRON_FRAME_SIZE_8ZONE) {
+                arg->alarm_board_type = MICRON_TYPE_8ZONE;
+                arg->frame_size = MICRON_FRAME_SIZE_8ZONE;
+                ESP_LOGD(TAG, "8 Zone");
+              }
+              else if (arg->id_clock_count == MICRON_FRAME_SIZE_16ZONE) {
+                arg->alarm_board_type = MICRON_TYPE_16ZONE;
+                arg->frame_size = MICRON_FRAME_SIZE_16ZONE;
+                ESP_LOGD(TAG, "16 Zone");
+              }
+              else {
+                // identification failed, let's retry
+                arg->id_cycle_count = 4;
+                arg->id_clock_count = 0;
+                ESP_LOGD(TAG, "Failed");
+              }
+            }
+            arg->id_clock_count = 0;
+          }
+          arg->last_interrupt_us_ = now_us;
+          //ESP_LOGD(TAG, "Last int: %d", arg->last_interrupt_us_);
+        };
       }
     }
 
