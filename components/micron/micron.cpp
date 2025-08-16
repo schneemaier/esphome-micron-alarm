@@ -133,9 +133,11 @@ namespace esphome
     void IRAM_ATTR MicronStore::interrupt(MicronStore *arg) {
       arg->interrupts++;
       arg->packet_interrupts++;
-      uint8_t cycles[4];
+      //uint8_t cycles[4];
 
       uint32_t now_us = micros();
+      bool clock_bit = arg->pin_clock_.digital_read();
+      bool data_bit = arg->pin_data_.digital_read();
 
       if ((now_us - arg->last_interrupt_us_) < MICRON_MIN_US) {
         //too shorter delay between interrupts.
@@ -143,25 +145,14 @@ namespace esphome
         // which seems to cause and issue on the clock line
         return;
       }
-
       // Read clock value:
       //  low -> falling edge -> Sens command, count number of clock cycles
       //  high -> rising edge) -> read bits
       // First idenitfy if the connected panel is 8 or 16 Zone. To do this we have to count the clock cycles: 24 -> 8 Zone, 40 -> 16 Zone
-      bool clock_bit = arg->pin_clock_.digital_read();
-      bool data_bit = arg->pin_data_.digital_read();
       if (arg->alarm_board_type != MICRON_TYPE_UNKNOWN) {
         // real work happens here
         auto now_ms = millis();
-        if (clock_bit == 0) {
-          // on falling edge
-          arg->last_interrupt_us_ = now_us;
-          // check if new rame started
-          arg->processor_.next(now_ms);
-          // write command
-          arg->processor_.write(&arg->pin_data_out_);
-        }
-        else {
+        if (clock_bit) {
           // on rising edge
           // data read happens here
           // bool data_bit = arg->pin_data_.digital_read();
@@ -177,6 +168,14 @@ namespace esphome
             arg->packet_bits = 0;
             arg->set_data_(arg->processor_.packet);
           }
+        }
+        else {
+          // on falling edge
+          arg->last_interrupt_us_ = now_us;
+          // check if new rame started
+          arg->processor_.next(now_ms);
+          // write command
+          arg->processor_.write(&arg->pin_data_out_);
         }
         // siren handling
         bool data_bit = arg->pin_siren_.digital_read();
