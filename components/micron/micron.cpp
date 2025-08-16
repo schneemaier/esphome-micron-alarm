@@ -95,7 +95,7 @@ namespace esphome
             this->buffer_[MICRON_BYTE_DATA_3] = 0;
             this->buffer_[MICRON_BYTE_DATA_4] = 0;
           }
-          this->packet->status = this->buffer_[MICRON_BYTE_DATA_1] << 24 | this->buffer_[MICRON_BYTE_DATA_2] << 16 | this->buffer_[MICRON_BYTE_DATA_3] << 8 | this->buffer_[MICRON_BYTE_DATA_4];
+          this->packet->status = this->buffer_[MICRON_BYTE_DATA_3] << 24 | this->buffer_[MICRON_BYTE_DATA_4] << 16 | this->buffer_[MICRON_BYTE_DATA_1] << 8 | this->buffer_[MICRON_BYTE_DATA_2];
 
           return true;
         }
