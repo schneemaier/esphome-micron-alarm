@@ -1,7 +1,5 @@
 #include "micron.h"
 #include "esphome/core/log.h"
-#include "freertos/FreeRTOS.h"
-#include "freertos/task.h"
 
 namespace esphome
 {
@@ -272,8 +270,7 @@ namespace esphome
       this->store_.setup(this->pin_clock_, this->pin_data_, this->pin_data_out_, this->pin_siren_, this->pin_siren_out_);
       ESP_LOGCONFIG(TAG, "Waiting for board ID");
       while (this->store_.alarm_board_type == MICRON_TYPE_UNKNOWN) {
-        ESP_LOGCONFIG(TAG, "Board not yet ID....");  
-        vTaskDelay(1000 / portTICK_PERIOD_MS); ; 
+        ESP_LOGCONFIG(TAG, "Board not yet ID....");
       }
       ESP_LOGCONFIG(TAG, "Board ID!");
       this->store_.setupID(this->pin_clock_);
