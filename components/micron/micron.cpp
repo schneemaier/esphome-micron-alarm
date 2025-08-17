@@ -165,7 +165,7 @@ namespace esphome
           }
           if (arg->alarm_board_type != MICRON_TYPE_UNKNOWN) {
             // change interrupt settings
-            pin_clock->attach_interrupt(MicronStore::interrupt, this, gpio::INTERRUPT_ANY_EDGE);
+            pin_clock_->attach_interrupt(MicronStore::interrupt, this, gpio::INTERRUPT_ANY_EDGE);
           }
 
         }
