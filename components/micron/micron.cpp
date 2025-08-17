@@ -163,10 +163,10 @@ namespace esphome
             arg->id_clock_count = 0;
             ESP_LOGD(TAG, "Failed");
           }
-          if (arg->alarm_board_type != MICRON_TYPE_UNKNOWN) {
+          //if (arg->alarm_board_type != MICRON_TYPE_UNKNOWN) {
             // change interrupt settings
-            pin_clock_->attach_interrupt(MicronStore::interrupt, this, gpio::INTERRUPT_ANY_EDGE);
-          }
+          //  pin_clock_->attach_interrupt(MicronStore::interrupt, this, gpio::INTERRUPT_ANY_EDGE);
+          //}
 
         }
         arg->id_clock_count = 0;
