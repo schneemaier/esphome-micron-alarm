@@ -192,12 +192,15 @@ namespace esphome
         // which seems to cause and issue on the clock line
         return;
       }
+      arg->last_interrupt_us_ = now_us;
+      
       auto now_ms = millis();
-      arg->bits_received++;
-      arg->packet_bits++;
+      arg->processor_.next(now_ms);
       // write command
       arg->processor_.write(&arg->pin_data_out_);
       bool data_bit = arg->pin_data_.digital_read();
+      arg->bits_received++;
+      arg->packet_bits++;
       //ESP_LOGD(TAG, "PAcketBits: %d, Data: %d", arg->packet_bits, data_bit);
       if (arg->processor_.decode(now_ms, data_bit, arg->frame_size)) {
         //ESP_LOGD(TAG, "DECODE RETURNED TRUE, %d", arg->packet_bits);
@@ -210,8 +213,7 @@ namespace esphome
         arg->packet_bits = 0;
         arg->set_data_(arg->processor_.packet);
       }
-      arg->last_interrupt_us_ = now_us;
-      arg->processor_.next(now_ms);
+
       data_bit = arg->pin_siren_.digital_read();
       if (data_bit) {
         arg->siren = 0x0001;
