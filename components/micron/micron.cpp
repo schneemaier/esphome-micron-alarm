@@ -125,7 +125,7 @@ namespace esphome
     }
 
     void MicronStore::setupID(InternalGPIOPin *pin_clock) {
-      pin_clock->attach_interrupt(MicronStore::interrupt, this, gpio::INTERRUPT_ANY_EDGE);
+      pin_clock->attach_interrupt(MicronStore::interrupt, this, gpio::INTERRUPT_FALLING_EDGE);
     }
 
     void MicronStore::write(uint8_t command, uint8_t repeat) {
@@ -179,10 +179,50 @@ namespace esphome
       //ESP_LOGD(TAG, "Last int: %d", arg->last_interrupt_us_);
     }
 
+
     void IRAM_ATTR MicronStore::interrupt(MicronStore *arg) {
       arg->interrupts++;
       arg->packet_interrupts++;
-      //uint8_t cycles[4];
+
+      uint32_t now_us = micros();
+
+      if ((now_us - arg->last_interrupt_us_) < MICRON_MIN_US) {
+        //too shorter delay between interrupts.
+        // this is caused by us sending command back to the panel,
+        // which seems to cause and issue on the clock line
+        return;
+      }
+      auto now_ms = millis();
+      arg->bits_received++;
+      arg->packet_bits++;
+      // write command
+      arg->processor_.write(&arg->pin_data_out_);
+      bool data_bit = arg->pin_data_.digital_read();
+      if (arg->processor_.decode(now_ms, data_bit, arg->frame_size)) {
+        arg->last_packet_ms = now_ms;
+        arg->packets_received++;
+        if (arg->packet_interrupts > arg->packet_bits) {
+          arg->packets_with_interference++;
+        }
+        arg->packet_interrupts = 0;
+        arg->packet_bits = 0;
+        arg->set_data_(arg->processor_.packet);
+      }
+      arg->last_interrupt_us_ = now_us;
+      arg->processor_.next(now_ms);
+      data_bit = arg->pin_siren_.digital_read();
+      if (data_bit) {
+        arg->siren = 0x0001;
+      }
+      else {
+        arg->siren = 0x0000;
+      }
+    }
+
+/*    
+    void IRAM_ATTR MicronStore::interrupt(MicronStore *arg) {
+      arg->interrupts++;
+      arg->packet_interrupts++;
 
       uint32_t now_us = micros();
       bool clock_bit = arg->pin_clock_.digital_read();
@@ -235,6 +275,7 @@ namespace esphome
         arg->siren = 0x0000;
       }
     }
+*/
 
     void IRAM_ATTR MicronStore::set_data_(MicronPacket *packet) {
       this->command = packet->command;
