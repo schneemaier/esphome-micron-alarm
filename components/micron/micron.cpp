@@ -120,7 +120,8 @@ namespace esphome
       //pin_clock->attach_interrupt(MicronStore::interrupt, this, gpio::INTERRUPT_FALLING_EDGE);
       //pin_clock->attach_interrupt(MicronStore::interrupt, this, gpio::INTERRUPT_RISING_EDGE);
       // TEST: Doing both edges to support both sending and receiving commands
-      pin_clock->attach_interrupt(MicronStore::interrupt, this, gpio::INTERRUPT_ANY_EDGE);
+      //pin_clock->attach_interrupt(MicronStore::interrupt, this, gpio::INTERRUPT_ANY_EDGE);
+      pin_clock->attach_interrupt(MicronStore::interruptID, this, gpio::INTERRUPT_FALLING_EDGE);
     }
 
     void MicronStore::write(uint8_t command, uint8_t repeat) {
@@ -128,6 +129,50 @@ namespace esphome
       this->processor_.command_repeat = repeat;
       this->commands_sent++;
       //this->processor_.remaining_command_writes = MICRON_COMMAND_FRAME_SIZE + 1;
+    }
+
+    void IRAM_ATTR MicronStore::interruptID(MicronStore *arg) {
+      uint32_t now_us = micros();
+      bool clock_bit = arg->pin_clock_.digital_read();
+      if ((now_us - arg->last_interrupt_us_) < MICRON_MIN_US) {
+        //too shorter delay between interrupts.
+        // this is caused by us sending command back to the panel,
+        // which seems to cause and issue on the clock line
+        return;
+      }
+      // ESP_LOGD(TAG, "Clock bit: %d", clock_bit);
+      arg->id_clock_count++;
+      //ESP_LOGD(TAG, "now: %d, last: %d, max: %d", now_us, arg->last_interrupt_us_, MICRON_MAX_MS * 1000);
+      if ((now_us - arg->last_interrupt_us_)  > (MICRON_MAX_MS * 1000)) {
+        ESP_LOGD(TAG, "Cycle complete, cycle: %d, clock: %d", arg->id_cycle_count, arg->id_clock_count);
+        arg->id_cycle_count--;
+        if (arg->id_cycle_count == 0) {
+          if (arg->id_clock_count == MICRON_FRAME_SIZE_8ZONE) {
+            arg->alarm_board_type = MICRON_TYPE_8ZONE;
+            arg->frame_size = MICRON_FRAME_SIZE_8ZONE;
+            ESP_LOGD(TAG, "8 Zone");
+          }
+          else if (arg->id_clock_count == MICRON_FRAME_SIZE_16ZONE) {
+            arg->alarm_board_type = MICRON_TYPE_16ZONE;
+            arg->frame_size = MICRON_FRAME_SIZE_16ZONE;
+            ESP_LOGD(TAG, "16 Zone");
+          }
+          else {
+            // identification failed, let's retry
+            arg->id_cycle_count = 4;
+            arg->id_clock_count = 0;
+            ESP_LOGD(TAG, "Failed");
+          }
+          if (arg->alarm_board_type != MICRON_TYPE_UNKNOWN) {
+            // change interrupt settings
+            pin_clock->attach_interrupt(MicronStore::interrupt, this, gpio::INTERRUPT_ANY_EDGE);
+          }
+
+        }
+        arg->id_clock_count = 0;
+      }
+      arg->last_interrupt_us_ = now_us;
+      //ESP_LOGD(TAG, "Last int: %d", arg->last_interrupt_us_);
     }
 
     void IRAM_ATTR MicronStore::interrupt(MicronStore *arg) {
@@ -149,78 +194,40 @@ namespace esphome
       //  low -> falling edge -> Sens command, count number of clock cycles
       //  high -> rising edge) -> read bits
       // First idenitfy if the connected panel is 8 or 16 Zone. To do this we have to count the clock cycles: 24 -> 8 Zone, 40 -> 16 Zone
-      if (arg->alarm_board_type != MICRON_TYPE_UNKNOWN) {
-        // real work happens here
-        auto now_ms = millis();
-        if (clock_bit) {
-          // on rising edge
-          // data read happens here
-          // bool data_bit = arg->pin_data_.digital_read();
-          arg->bits_received++;
-          arg->packet_bits++;
-          if (arg->processor_.decode(now_ms, data_bit, arg->frame_size)) {
-            arg->last_packet_ms = now_ms;
-            arg->packets_received++;
-            if (arg->packet_interrupts > arg->packet_bits) {
-              arg->packets_with_interference++;
-            }
-            arg->packet_interrupts = 0;
-            arg->packet_bits = 0;
-            arg->set_data_(arg->processor_.packet);
+      // real work happens here
+      auto now_ms = millis();
+      if (clock_bit) {
+        // on rising edge
+        // data read happens here
+        // bool data_bit = arg->pin_data_.digital_read();
+        arg->bits_received++;
+        arg->packet_bits++;
+        if (arg->processor_.decode(now_ms, data_bit, arg->frame_size)) {
+          arg->last_packet_ms = now_ms;
+          arg->packets_received++;
+          if (arg->packet_interrupts > arg->packet_bits) {
+            arg->packets_with_interference++;
           }
-        }
-        else {
-          // on falling edge
-          arg->last_interrupt_us_ = now_us;
-          // check if new rame started
-          arg->processor_.next(now_ms);
-          // write command
-          arg->processor_.write(&arg->pin_data_out_);
-        }
-        // siren handling
-        bool data_bit = arg->pin_siren_.digital_read();
-        if (data_bit) {
-          arg->siren = 0x0001;
-        }
-        else {
-          arg->siren = 0x0000;
+          arg->packet_interrupts = 0;
+          arg->packet_bits = 0;
+          arg->set_data_(arg->processor_.packet);
         }
       }
       else {
-        // Only count falling edges
-        // ESP_LOGD(TAG, "Clock bit: %d", clock_bit);
-        //if (not clock_bit) {
-        if (clock_bit) { // test line
-          // ESP_LOGD(TAG, "Falling EDGE");
-          arg->id_clock_count++;
-          //ESP_LOGD(TAG, "now: %d, last: %d, max: %d", now_us, arg->last_interrupt_us_, MICRON_MAX_MS * 1000);
-          if ((now_us - arg->last_interrupt_us_)  > (MICRON_MAX_MS * 1000)) {
-            //cycles[arg->id_cycle_count] = arg->id_clock_count;
-            ESP_LOGD(TAG, "Cycle complete, cycle: %d, clock: %d", arg->id_cycle_count, arg->id_clock_count);
-            arg->id_cycle_count--;
-            if (arg->id_cycle_count == 0) {
-              if (arg->id_clock_count == MICRON_FRAME_SIZE_8ZONE) {
-                arg->alarm_board_type = MICRON_TYPE_8ZONE;
-                arg->frame_size = MICRON_FRAME_SIZE_8ZONE;
-                ESP_LOGD(TAG, "8 Zone");
-              }
-              else if (arg->id_clock_count == MICRON_FRAME_SIZE_16ZONE) {
-                arg->alarm_board_type = MICRON_TYPE_16ZONE;
-                arg->frame_size = MICRON_FRAME_SIZE_16ZONE;
-                ESP_LOGD(TAG, "16 Zone");
-              }
-              else {
-                // identification failed, let's retry
-                arg->id_cycle_count = 4;
-                arg->id_clock_count = 0;
-                ESP_LOGD(TAG, "Failed");
-              }
-            }
-            arg->id_clock_count = 0;
-          }
-          arg->last_interrupt_us_ = now_us;
-          //ESP_LOGD(TAG, "Last int: %d", arg->last_interrupt_us_);
-        };
+        // on falling edge
+        arg->last_interrupt_us_ = now_us;
+        // check if new rame started
+        arg->processor_.next(now_ms);
+        // write command
+        arg->processor_.write(&arg->pin_data_out_);
+      }
+      // siren handling
+      bool data_bit = arg->pin_siren_.digital_read();
+      if (data_bit) {
+        arg->siren = 0x0001;
+      }
+      else {
+        arg->siren = 0x0000;
       }
     }
 
