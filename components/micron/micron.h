@@ -129,6 +129,7 @@ namespace esphome
       uint32_t last_packet_ms;
 
       void setup(InternalGPIOPin *pin_clock, InternalGPIOPin *pin_data, InternalGPIOPin *pin_data_out, InternalGPIOPin *pin_siren, InternalGPIOPin *pin_siren_out);
+      void setupID(InternalGPIOPin *pin_clock);
       void write(uint8_t command, uint8_t repeat = 1);
       static void interrupt(MicronStore *arg);
       static void interruptID(MicronStore *arg);

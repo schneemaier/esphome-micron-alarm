@@ -124,6 +124,10 @@ namespace esphome
       pin_clock->attach_interrupt(MicronStore::interruptID, this, gpio::INTERRUPT_FALLING_EDGE);
     }
 
+    void MicronStore::setupID(InternalGPIOPin *pin_clock) {
+      pin_clock->attach_interrupt(MicronStore::interrupt, this, gpio::INTERRUPT_ANY_EDGE);
+    }
+
     void MicronStore::write(uint8_t command, uint8_t repeat) {
       this->processor_.command_out = command;
       this->processor_.command_repeat = repeat;
@@ -133,7 +137,7 @@ namespace esphome
 
     void IRAM_ATTR MicronStore::interruptID(MicronStore *arg) {
       uint32_t now_us = micros();
-      bool clock_bit = arg->pin_clock_.digital_read();
+      //bool clock_bit = arg->pin_clock_.digital_read();
       if ((now_us - arg->last_interrupt_us_) < MICRON_MIN_US) {
         //too shorter delay between interrupts.
         // this is caused by us sending command back to the panel,
@@ -222,7 +226,8 @@ namespace esphome
         arg->processor_.write(&arg->pin_data_out_);
       }
       // siren handling
-      bool data_bit = arg->pin_siren_.digital_read();
+      //bool data_bit = arg->pin_siren_.digital_read();
+      data_bit = arg->pin_siren_.digital_read();
       if (data_bit) {
         arg->siren = 0x0001;
       }
@@ -263,6 +268,13 @@ namespace esphome
 
       //this->store_.setup(this->pin_clock_, this->pin_data_, this->pin_data_out_);
       this->store_.setup(this->pin_clock_, this->pin_data_, this->pin_data_out_, this->pin_siren_, this->pin_siren_out_);
+      ESP_LOGCONFIG(TAG, "Waiting for board ID");
+      while (this->store_.alarm_board_type == MICRON_TYPE_UNKNOWN) {
+        ESP_LOGCONFIG(TAG, "Board not yet ID....");  
+        sleep(1000); 
+      }
+      ESP_LOGCONFIG(TAG, "Board ID!");
+      this->store_.setupID(this->pin_clock_);
       ESP_LOGCONFIG(TAG, "Setting up Micron...COMPLETED");
     }
 
