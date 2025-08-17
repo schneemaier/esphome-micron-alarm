@@ -125,7 +125,7 @@ namespace esphome
     }
 
     void MicronStore::setupID(InternalGPIOPin *pin_clock) {
-      pin_clock->attach_interrupt(MicronStore::interrupt, this, gpio::INTERRUPT_RISING_EDGE);
+      pin_clock->attach_interrupt(MicronStore::interrupt, this, gpio::INTERRUPT_FALLING_EDGE);
     }
 
     void MicronStore::write(uint8_t command, uint8_t repeat) {
