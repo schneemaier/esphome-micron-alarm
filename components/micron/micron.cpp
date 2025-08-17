@@ -198,6 +198,7 @@ namespace esphome
       // write command
       arg->processor_.write(&arg->pin_data_out_);
       bool data_bit = arg->pin_data_.digital_read();
+      ESP_LOGD(TAG, "PAcketBits: %d, Data: %d", arg->packet_bits, data_bit);
       if (arg->processor_.decode(now_ms, data_bit, arg->frame_size)) {
         arg->last_packet_ms = now_ms;
         arg->packets_received++;
