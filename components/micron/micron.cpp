@@ -200,7 +200,7 @@ namespace esphome
       bool data_bit = arg->pin_data_.digital_read();
       //ESP_LOGD(TAG, "PAcketBits: %d, Data: %d", arg->packet_bits, data_bit);
       if (arg->processor_.decode(now_ms, data_bit, arg->frame_size)) {
-        ESP_LOGD(TAG, "DECODE RETURNED TRUE, %d", arg->packet_bits);
+        //ESP_LOGD(TAG, "DECODE RETURNED TRUE, %d", arg->packet_bits);
         arg->last_packet_ms = now_ms;
         arg->packets_received++;
         if (arg->packet_interrupts > arg->packet_bits) {
