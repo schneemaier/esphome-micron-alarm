@@ -128,15 +128,18 @@ namespace esphome
 
       uint32_t last_packet_ms;
 
-      void setup(InternalGPIOPin *pin_clock, InternalGPIOPin *pin_data, InternalGPIOPin *pin_data_out, InternalGPIOPin *pin_siren, InternalGPIOPin *pin_siren_out);
-      void setupID(InternalGPIOPin *pin_clock);
+      void setup(InternalGPIOPin *pin_clock, InternalGPIOPin *pin_clock2, InternalGPIOPin *pin_data, InternalGPIOPin *pin_data_out, InternalGPIOPin *pin_siren, InternalGPIOPin *pin_siren_out);
+      void setupFall(InternalGPIOPin *pin_clock);
+      void setupRise(InternalGPIOPin *pin_clock2);
       void write(uint8_t command, uint8_t repeat = 1);
-      static void interrupt(MicronStore *arg);
+      static void interruptFall(MicronStore *arg);
+      static void interruptRise(MicronStore *arg);
       static void interruptID(MicronStore *arg);
 
       MicronDataProcessor processor_;
     protected:
       ISRInternalGPIOPin pin_clock_;
+      ISRInternalGPIOPin pin_clock2_;
       ISRInternalGPIOPin pin_data_;
       ISRInternalGPIOPin pin_data_out_;
       ISRInternalGPIOPin pin_siren_;
@@ -152,6 +155,7 @@ namespace esphome
     {
     public:
       void set_pin_clock(InternalGPIOPin *pin_clock) { pin_clock_ = pin_clock; }
+      void set_pin_clock2(InternalGPIOPin *pin_clock2) { pin_clock2_ = pin_clock2; }
       void set_pin_data(InternalGPIOPin *pin_data) { pin_data_ = pin_data; }
       void set_pin_data_out(InternalGPIOPin *pin_data_out) { pin_data_out_ = pin_data_out; }
       void set_pin_siren(InternalGPIOPin *pin_siren) { pin_siren_ = pin_siren; }
@@ -199,6 +203,7 @@ namespace esphome
     protected:
       MicronStore store_;
       InternalGPIOPin *pin_clock_;
+      InternalGPIOPin *pin_clock2_;
       InternalGPIOPin *pin_data_;
       InternalGPIOPin *pin_data_out_;
       InternalGPIOPin *pin_siren_;

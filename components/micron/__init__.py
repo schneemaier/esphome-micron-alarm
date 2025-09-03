@@ -11,6 +11,7 @@ from esphome.cpp_helpers import gpio_pin_expression
 from esphome.const import (
     CONF_ID,
     CONF_CLOCK_PIN,
+    CONF_CLOCK_PIN2,
     CONF_DATA_PIN,
     DEVICE_CLASS_OCCUPANCY,
     DEVICE_CLASS_POWER,
@@ -71,6 +72,7 @@ CONFIG_SCHEMA = cv.All(
         {
             cv.GenerateID(): cv.declare_id(MicronComponent),
             cv.Required(CONF_CLOCK_PIN): cv.All(pins.internal_gpio_input_pin_schema),
+            cv.Required(CONF_CLOCK_PIN2): cv.All(pins.internal_gpio_input_pin_schema),
             cv.Required(CONF_DATA_IN_PIN): cv.All(pins.internal_gpio_input_pin_schema),
             cv.Required(CONF_DATA_OUT_PIN): cv.All(pins.internal_gpio_output_pin_schema),
             cv.Required(CONF_SIREN_IN_PIN): cv.All(pins.internal_gpio_input_pin_schema),
@@ -168,6 +170,8 @@ async def to_code(config):
 
     pin_clock = await gpio_pin_expression(config[CONF_CLOCK_PIN])
     cg.add(var.set_pin_clock(pin_clock))
+    pin_clock2 = await gpio_pin_expression(config[CONF_CLOCK_PIN2])
+    cg.add(var.set_pin_clock(pin_clock2))
     pin_data = await gpio_pin_expression(config[CONF_DATA_IN_PIN])
     cg.add(var.set_pin_data(pin_data))
     pin_data_out = await gpio_pin_expression(config[CONF_DATA_OUT_PIN])

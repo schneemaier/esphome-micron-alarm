@@ -103,13 +103,15 @@ namespace esphome
       return false;
     }
 
-    void MicronStore::setup(InternalGPIOPin *pin_clock, InternalGPIOPin *pin_data, InternalGPIOPin *pin_data_out, InternalGPIOPin *pin_siren, InternalGPIOPin *pin_siren_out) {
+    void MicronStore::setup(InternalGPIOPin *pin_clock, InternalGPIOPin *pin_clock2, InternalGPIOPin *pin_data, InternalGPIOPin *pin_data_out, InternalGPIOPin *pin_siren, InternalGPIOPin *pin_siren_out) {
       pin_clock->setup();
+      pin_clock2->setup();
       pin_data->setup();
       pin_data_out->setup();
       pin_siren->setup();
       pin_siren_out->setup();
       this->pin_clock_ = pin_clock->to_isr();
+      this->pin_clock2_ = pin_clock2->to_isr();
       this->pin_data_ = pin_data->to_isr();
       this->pin_data_out_ = pin_data_out->to_isr();
       this->pin_siren_ = pin_siren->to_isr();
@@ -124,8 +126,12 @@ namespace esphome
       pin_clock->attach_interrupt(MicronStore::interruptID, this, gpio::INTERRUPT_FALLING_EDGE);
     }
 
-    void MicronStore::setupID(InternalGPIOPin *pin_clock) {
-      pin_clock->attach_interrupt(MicronStore::interrupt, this, gpio::INTERRUPT_FALLING_EDGE);
+    void MicronStore::setupFall(InternalGPIOPin *pin_clock) {
+      pin_clock->attach_interrupt(MicronStore::interruptFall, this, gpio::INTERRUPT_FALLING_EDGE);
+    }
+
+    void MicronStore::setupRise(InternalGPIOPin *pin_clock2) {
+      pin_clock2->attach_interrupt(MicronStore::interruptRise, this, gpio::INTERRUPT_RISING_EDGE);
     }
 
     void MicronStore::write(uint8_t command, uint8_t repeat) {
@@ -167,10 +173,11 @@ namespace esphome
             arg->id_clock_count = 0;
             ESP_LOGD(TAG, "Failed");
           }
-          //if (arg->alarm_board_type != MICRON_TYPE_UNKNOWN) {
-            // change interrupt settings
-          //  pin_clock_->attach_interrupt(MicronStore::interrupt, this, gpio::INTERRUPT_ANY_EDGE);
-          //}
+          if (arg->alarm_board_type != MICRON_TYPE_UNKNOWN) {
+            //change interrupt settings
+            pin_clock_->attach_interrupt(MicronStore::interruptFall, this, gpio::INTERRUPT_FALLING_EDGE);
+            pin_clock2_->attach_interrupt(MicronStore::interruptRise, this, gpio::INTERRUPT_RISING_EDGE);
+          }
 
         }
         arg->id_clock_count = 0;
@@ -180,7 +187,8 @@ namespace esphome
     }
 
 
-    void IRAM_ATTR MicronStore::interrupt(MicronStore *arg) {
+    void IRAM_ATTR MicronStore::interruptFall(MicronStore *arg) {
+      # Falling edge interrupt
       arg->interrupts++;
       arg->packet_interrupts++;
 
@@ -223,6 +231,10 @@ namespace esphome
       }
     }
 
+    void IRAM_ATTR MicronStore::interruptRise(MicronStore *arg) {
+      uint32_t now_us = micros();
+      // TBD rising edge to read keyboard input
+    }
 /*    
     void IRAM_ATTR MicronStore::interrupt(MicronStore *arg) {
       arg->interrupts++;
