@@ -173,11 +173,11 @@ namespace esphome
             arg->id_clock_count = 0;
             ESP_LOGD(TAG, "Failed");
           }
-          if (arg->alarm_board_type != MICRON_TYPE_UNKNOWN) {
+          //if (arg->alarm_board_type != MICRON_TYPE_UNKNOWN) {
             //change interrupt settings
-            pin_clock_->attach_interrupt(MicronStore::interruptFall, this, gpio::INTERRUPT_FALLING_EDGE);
-            pin_clock2_->attach_interrupt(MicronStore::interruptRise, this, gpio::INTERRUPT_RISING_EDGE);
-          }
+          //  pin_clock_->attach_interrupt(MicronStore::interruptFall, this, gpio::INTERRUPT_FALLING_EDGE);
+          //  pin_clock2_->attach_interrupt(MicronStore::interruptRise, this, gpio::INTERRUPT_RISING_EDGE);
+          //}
 
         }
         arg->id_clock_count = 0;
@@ -188,7 +188,7 @@ namespace esphome
 
 
     void IRAM_ATTR MicronStore::interruptFall(MicronStore *arg) {
-      # Falling edge interrupt
+      // Falling edge interrupt
       arg->interrupts++;
       arg->packet_interrupts++;
 
