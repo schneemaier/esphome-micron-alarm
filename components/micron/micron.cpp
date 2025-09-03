@@ -325,7 +325,7 @@ namespace esphome
 
       //this->store_.setup(this->pin_clock_, this->pin_data_, this->pin_data_out_);
       // starting with board ID
-      this->store_.setup(this->pin_clock_, this->pin_data_, this->pin_data_out_, this->pin_siren_, this->pin_siren_out_);
+      this->store_.setup(this->pin_clock_, this->pin_clock2_, this->pin_data_, this->pin_data_out_, this->pin_siren_, this->pin_siren_out_);
       ESP_LOGCONFIG(TAG, "Setting up Micron...COMPLETED");
     }
 
