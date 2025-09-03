@@ -324,13 +324,8 @@ namespace esphome
       ESP_LOGCONFIG(TAG, "Setting up Micron...");
 
       //this->store_.setup(this->pin_clock_, this->pin_data_, this->pin_data_out_);
+      // starting with board ID
       this->store_.setup(this->pin_clock_, this->pin_data_, this->pin_data_out_, this->pin_siren_, this->pin_siren_out_);
-      ESP_LOGCONFIG(TAG, "Waiting for board ID");
-      while (this->store_.alarm_board_type == MICRON_TYPE_UNKNOWN) {
-        ESP_LOGCONFIG(TAG, "Board not yet ID....");
-      }
-      ESP_LOGCONFIG(TAG, "Board ID!");
-      this->store_.setupID(this->pin_clock_);
       ESP_LOGCONFIG(TAG, "Setting up Micron...COMPLETED");
     }
 
@@ -353,84 +348,94 @@ namespace esphome
     }
 
     void MicronComponent::loop() {
-      bool is_connected = (millis() - this->store_.last_packet_ms) < MICRON_CLOCK_TIMEOUT_MS;
-      if (!is_connected) {
-        this->store_.status = 0x00;
+      ESP_LOGCONFIG(TAG, "Waiting for board ID");
+      if (this->store_.alarm_board_type == MICRON_TYPE_UNKNOWN) {
+        ESP_LOGCONFIG(TAG, "Board not yet ID....");
+        // setup falling edge interrupt
+        this->store_.setupFall(this->pin_clock_);
       }
-      if (this->m_binary_sensor_) {
-        this->m_binary_sensor_->publish_state((this->store_.status & MICRON_M_MASK) == MICRON_M_MASK);
-      }
-      if (this->battery_binary_sensor_) {
-        this->battery_binary_sensor_->publish_state((this->store_.status & MICRON_BATTERY_MASK) == MICRON_BATTERY_MASK);
-      }
-      if (this->zonea_binary_sensor_) {
-        this->zonea_binary_sensor_->publish_state((this->store_.status & MICRON_ZONE_A_MASK) == MICRON_ZONE_A_MASK);
-      }
-      if (this->zoneb_binary_sensor_) {
-        this->zoneb_binary_sensor_->publish_state((this->store_.status & MICRON_ZONE_B_MASK) == MICRON_ZONE_B_MASK);
-      }
+      else {
+        //ESP_LOGCONFIG(TAG, "Board ID!");
 
-      if (this->beep1_binary_sensor_) {
-        this->beep1_binary_sensor_->publish_state((this->store_.status & MICRON_KEY_BEEP_1_MASK) == MICRON_KEY_BEEP_1_MASK);
-      }
-      if (this->beep3_binary_sensor_) {
-        this->beep3_binary_sensor_->publish_state((this->store_.status & MICRON_KEY_BEEP_3_MASK) == MICRON_KEY_BEEP_3_MASK);
-      }
+        bool is_connected = (millis() - this->store_.last_packet_ms) < MICRON_CLOCK_TIMEOUT_MS;
+        if (!is_connected) {
+          this->store_.status = 0x00;
+        }
+        if (this->m_binary_sensor_) {
+          this->m_binary_sensor_->publish_state((this->store_.status & MICRON_M_MASK) == MICRON_M_MASK);
+        }
+        if (this->battery_binary_sensor_) {
+          this->battery_binary_sensor_->publish_state((this->store_.status & MICRON_BATTERY_MASK) == MICRON_BATTERY_MASK);
+        }
+        if (this->zonea_binary_sensor_) {
+          this->zonea_binary_sensor_->publish_state((this->store_.status & MICRON_ZONE_A_MASK) == MICRON_ZONE_A_MASK);
+        }
+        if (this->zoneb_binary_sensor_) {
+          this->zoneb_binary_sensor_->publish_state((this->store_.status & MICRON_ZONE_B_MASK) == MICRON_ZONE_B_MASK);
+        }
 
-      if (this->zone1_binary_sensor_) {
-        this->zone1_binary_sensor_->publish_state((this->store_.status & MICRON_ZONE_1_MASK) == MICRON_ZONE_1_MASK);
-      }
-      if (this->zone2_binary_sensor_) {
-        this->zone2_binary_sensor_->publish_state((this->store_.status & MICRON_ZONE_2_MASK) == MICRON_ZONE_2_MASK);
-      }
-      if (this->zone3_binary_sensor_) {
-        this->zone3_binary_sensor_->publish_state((this->store_.status & MICRON_ZONE_3_MASK) == MICRON_ZONE_3_MASK);
-      }
-      if (this->zone4_binary_sensor_) {
-        this->zone4_binary_sensor_->publish_state((this->store_.status & MICRON_ZONE_4_MASK) == MICRON_ZONE_4_MASK);
-      }
-      if (this->zone5_binary_sensor_) {
-        this->zone5_binary_sensor_->publish_state((this->store_.status & MICRON_ZONE_5_MASK) == MICRON_ZONE_5_MASK);
-      }
-      if (this->zone6_binary_sensor_) {
-        this->zone6_binary_sensor_->publish_state((this->store_.status & MICRON_ZONE_6_MASK) == MICRON_ZONE_6_MASK);
-      }
-      if (this->zone7_binary_sensor_) {
-        this->zone7_binary_sensor_->publish_state((this->store_.status & MICRON_ZONE_7_MASK) == MICRON_ZONE_7_MASK);
-      }
-      if (this->zone8_binary_sensor_) {
-        this->zone8_binary_sensor_->publish_state((this->store_.status & MICRON_ZONE_8_MASK) == MICRON_ZONE_8_MASK);
-      }
+        if (this->beep1_binary_sensor_) {
+          this->beep1_binary_sensor_->publish_state((this->store_.status & MICRON_KEY_BEEP_1_MASK) == MICRON_KEY_BEEP_1_MASK);
+        }
+        if (this->beep3_binary_sensor_) {
+          this->beep3_binary_sensor_->publish_state((this->store_.status & MICRON_KEY_BEEP_3_MASK) == MICRON_KEY_BEEP_3_MASK);
+        }
 
-      if (this->keypad_text_sensor_ && this->command_dedupe_.next(this->store_.command) && this->store_.command != 0x00) {
-        this->keypad_text_sensor_->publish_state(str_sprintf("0x%02x", this->store_.command));
-      }
-      if (this->status_text_sensor_ && this->status_dedupe_.next(this->store_.status)) {
-        this->status_text_sensor_->publish_state(str_sprintf("0x%04x", this->store_.status));
-      }
-      if (this->siren_binary_sensor_) {
-        this->siren_binary_sensor_->publish_state((this->store_.siren & MICRON_SIREN_MASK) == MICRON_SIREN_MASK);
-      }
-      if (this->connected_binary_sensor_) {
-        this->connected_binary_sensor_->publish_state(is_connected);
-      }
+        if (this->zone1_binary_sensor_) {
+          this->zone1_binary_sensor_->publish_state((this->store_.status & MICRON_ZONE_1_MASK) == MICRON_ZONE_1_MASK);
+        }
+        if (this->zone2_binary_sensor_) {
+          this->zone2_binary_sensor_->publish_state((this->store_.status & MICRON_ZONE_2_MASK) == MICRON_ZONE_2_MASK);
+        }
+        if (this->zone3_binary_sensor_) {
+          this->zone3_binary_sensor_->publish_state((this->store_.status & MICRON_ZONE_3_MASK) == MICRON_ZONE_3_MASK);
+        }
+        if (this->zone4_binary_sensor_) {
+          this->zone4_binary_sensor_->publish_state((this->store_.status & MICRON_ZONE_4_MASK) == MICRON_ZONE_4_MASK);
+        }
+        if (this->zone5_binary_sensor_) {
+          this->zone5_binary_sensor_->publish_state((this->store_.status & MICRON_ZONE_5_MASK) == MICRON_ZONE_5_MASK);
+        }
+        if (this->zone6_binary_sensor_) {
+          this->zone6_binary_sensor_->publish_state((this->store_.status & MICRON_ZONE_6_MASK) == MICRON_ZONE_6_MASK);
+        }
+        if (this->zone7_binary_sensor_) {
+          this->zone7_binary_sensor_->publish_state((this->store_.status & MICRON_ZONE_7_MASK) == MICRON_ZONE_7_MASK);
+        }
+        if (this->zone8_binary_sensor_) {
+          this->zone8_binary_sensor_->publish_state((this->store_.status & MICRON_ZONE_8_MASK) == MICRON_ZONE_8_MASK);
+        }
 
-      if (this->night_binary_sensor_) {
-        this->night_binary_sensor_->publish_state((this->store_.status & MICRON_NIGHT_ARMED_MASK) == MICRON_NIGHT_ARMED_MASK);
-      }
-      if (this->test2_binary_sensor_) {
-        this->test2_binary_sensor_->publish_state((this->store_.status & MICRON_0800_MASK) == MICRON_0800_MASK);
-      }
+        if (this->keypad_text_sensor_ && this->command_dedupe_.next(this->store_.command) && this->store_.command != 0x00) {
+          this->keypad_text_sensor_->publish_state(str_sprintf("0x%02x", this->store_.command));
+        }
+        if (this->status_text_sensor_ && this->status_dedupe_.next(this->store_.status)) {
+          this->status_text_sensor_->publish_state(str_sprintf("0x%04x", this->store_.status));
+        }
+        if (this->siren_binary_sensor_) {
+          this->siren_binary_sensor_->publish_state((this->store_.siren & MICRON_SIREN_MASK) == MICRON_SIREN_MASK);
+        }
+        if (this->connected_binary_sensor_) {
+          this->connected_binary_sensor_->publish_state(is_connected);
+        }
 
-      if (!this->command_queue_.empty() && (millis() - this->last_command_ms_) >= MICRON_MAX_COMMAND_DELAY_MS) {
-        this->last_command_ms_ = millis();
-        auto command = this->command_queue_.front();
-        ESP_LOGD(TAG, "Write command: 0x%02x", command);
-        this->store_.write(command, 2);
-        this->last_command_ = command;
-        this->command_queue_.pop();
-        if (this->command_queue_.empty()) {
-          ESP_LOGD(TAG, "All commands written");
+        if (this->night_binary_sensor_) {
+          this->night_binary_sensor_->publish_state((this->store_.status & MICRON_NIGHT_ARMED_MASK) == MICRON_NIGHT_ARMED_MASK);
+        }
+        if (this->test2_binary_sensor_) {
+          this->test2_binary_sensor_->publish_state((this->store_.status & MICRON_0800_MASK) == MICRON_0800_MASK);
+        }
+
+        if (!this->command_queue_.empty() && (millis() - this->last_command_ms_) >= MICRON_MAX_COMMAND_DELAY_MS) {
+          this->last_command_ms_ = millis();
+          auto command = this->command_queue_.front();
+          ESP_LOGD(TAG, "Write command: 0x%02x", command);
+          this->store_.write(command, 2);
+          this->last_command_ = command;
+          this->command_queue_.pop();
+          if (this->command_queue_.empty()) {
+            ESP_LOGD(TAG, "All commands written");
+          }
         }
       }
     }
