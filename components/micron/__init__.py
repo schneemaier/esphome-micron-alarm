@@ -201,6 +201,14 @@ async def to_code(config):
         sens = await binary_sensor.new_binary_sensor(config[CONF_ZONE_B])
         cg.add(var.set_zoneb_binary_sensor(sens))
 
+    if CONF_ZONE_C in config:
+        sens = await binary_sensor.new_binary_sensor(config[CONF_ZONE_C])
+        cg.add(var.set_zonec_binary_sensor(sens))
+
+    if CONF_ZONE_D in config:
+        sens = await binary_sensor.new_binary_sensor(config[CONF_ZONE_D])
+        cg.add(var.set_zoned_binary_sensor(sens))
+
     if CONF_BEEP_1 in config:
         sens = await binary_sensor.new_binary_sensor(config[CONF_BEEP_1])
         cg.add(var.set_beep1_binary_sensor(sens))
@@ -245,6 +253,38 @@ async def to_code(config):
         sens = await binary_sensor.new_binary_sensor(config[CONF_ZONE_8])
         cg.add(var.set_zone8_binary_sensor(sens))
 
+    if CONF_ZONE_9 in config:
+        sens = await binary_sensor.new_binary_sensor(config[CONF_ZONE_9])
+        cg.add(var.set_zone9_binary_sensor(sens))
+
+    if CONF_ZONE_10 in config:
+        sens = await binary_sensor.new_binary_sensor(config[CONF_ZONE_10])
+        cg.add(var.set_zone10_binary_sensor(sens))
+
+    if CONF_ZONE_11 in config:
+        sens = await binary_sensor.new_binary_sensor(config[CONF_ZONE_11])
+        cg.add(var.set_zone11_binary_sensor(sens))
+
+    if CONF_ZONE_12 in config:
+        sens = await binary_sensor.new_binary_sensor(config[CONF_ZONE_12])
+        cg.add(var.set_zone12_binary_sensor(sens))
+
+    if CONF_ZONE_13 in config:
+        sens = await binary_sensor.new_binary_sensor(config[CONF_ZONE_13])
+        cg.add(var.set_zone13_binary_sensor(sens))
+
+    if CONF_ZONE_14 in config:
+        sens = await binary_sensor.new_binary_sensor(config[CONF_ZONE_14])
+        cg.add(var.set_zone14_binary_sensor(sens))
+
+    if CONF_ZONE_15 in config:
+        sens = await binary_sensor.new_binary_sensor(config[CONF_ZONE_15])
+        cg.add(var.set_zone15_binary_sensor(sens))
+
+    if CONF_ZONE_16 in config:
+        sens = await binary_sensor.new_binary_sensor(config[CONF_ZONE_16])
+        cg.add(var.set_zone16_binary_sensor(sens))
+        
     if CONF_KEYPAD in config:
         sens = await text_sensor.new_text_sensor(config[CONF_KEYPAD])
         cg.add(var.set_keypad_text_sensor(sens))

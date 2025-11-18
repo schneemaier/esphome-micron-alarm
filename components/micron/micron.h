@@ -75,6 +75,24 @@ namespace esphome
     static const uint32_t MICRON_ZONE_B_MASK = 0x4000;
     static const uint32_t MICRON_KEY_BEEP_1_MASK = 0x8000;
 
+    // guess for 16 zone versions are identified
+    static const uint32_t MICRON_ZONE_9_MASK = 0x0001;
+    static const uint32_t MICRON_ZONE_10_MASK = 0x0002;
+    static const uint32_t MICRON_ZONE_11_MASK = 0x0004;
+    static const uint32_t MICRON_ZONE_12_MASK = 0x0008;
+    static const uint32_t MICRON_ZONE_13_MASK = 0x0010;
+    static const uint32_t MICRON_ZONE_14_MASK = 0x0020;
+    static const uint32_t MICRON_ZONE_C_MASK = 0x0040;
+    static const uint32_t MICRON_KEY_BEEP_3_MASK = 0x0080;
+    static const uint32_t MICRON_ZONE_15_MASK = 0x0100;
+    static const uint32_t MICRON_ZONE_16_MASK = 0x0200;
+    static const uint32_t MICRON_NIGHT_ARMED_MASK = 0x0400;
+    static const uint32_t MICRON_0800_MASK = 0x0800;
+    static const uint32_t MICRON_BATTERY_MASK = 0x1000;
+    static const uint32_t MICRON_M_MASK = 0x2000;
+    static const uint32_t MICRON_ZONE_D_MASK = 0x4000;
+    static const uint32_t MICRON_KEY_BEEP_1_MASK = 0x8000;
+
     static const uint16_t MICRON_SIREN_MASK = 0x0001;
 
     static const uint32_t MICRON_MAX_COMMAND_DELAY_MS = 240;
@@ -167,6 +185,8 @@ namespace esphome
       void set_battery_binary_sensor(binary_sensor::BinarySensor  *battery_binary_sensor) { battery_binary_sensor_ = battery_binary_sensor; }
       void set_zonea_binary_sensor(binary_sensor::BinarySensor  *zonea_binary_sensor) { zonea_binary_sensor_ = zonea_binary_sensor; }
       void set_zoneb_binary_sensor(binary_sensor::BinarySensor  *zoneb_binary_sensor) { zoneb_binary_sensor_ = zoneb_binary_sensor; }
+      void set_zonec_binary_sensor(binary_sensor::BinarySensor  *zonec_binary_sensor) { zonec_binary_sensor_ = zonec_binary_sensor; }
+      void set_zonec_binary_sensor(binary_sensor::BinarySensor  *zoned_binary_sensor) { zoned_binary_sensor_ = zoned_binary_sensor; }
 
       void set_beep1_binary_sensor(binary_sensor::BinarySensor  *beep1_binary_sensor) { beep1_binary_sensor_ = beep1_binary_sensor; }
       void set_beep3_binary_sensor(binary_sensor::BinarySensor  *beep3_binary_sensor) { beep3_binary_sensor_ = beep3_binary_sensor; }
@@ -179,6 +199,15 @@ namespace esphome
       void set_zone6_binary_sensor(binary_sensor::BinarySensor  *zone6_binary_sensor) { zone6_binary_sensor_ = zone6_binary_sensor; }
       void set_zone7_binary_sensor(binary_sensor::BinarySensor  *zone7_binary_sensor) { zone7_binary_sensor_ = zone7_binary_sensor; }
       void set_zone8_binary_sensor(binary_sensor::BinarySensor  *zone8_binary_sensor) { zone8_binary_sensor_ = zone8_binary_sensor; }
+
+      void set_zone9_binary_sensor(binary_sensor::BinarySensor  *zone9_binary_sensor) { zone9_binary_sensor_ = zone9_binary_sensor; }
+      void set_zone10_binary_sensor(binary_sensor::BinarySensor  *zone10_binary_sensor) { zone10_binary_sensor_ = zone10_binary_sensor; }
+      void set_zone11_binary_sensor(binary_sensor::BinarySensor  *zone11_binary_sensor) { zone11_binary_sensor_ = zone11_binary_sensor; }
+      void set_zone12_binary_sensor(binary_sensor::BinarySensor  *zone12_binary_sensor) { zone12_binary_sensor_ = zone13_binary_sensor; }
+      void set_zone13_binary_sensor(binary_sensor::BinarySensor  *zone13_binary_sensor) { zone13_binary_sensor_ = zone13_binary_sensor; }
+      void set_zone14_binary_sensor(binary_sensor::BinarySensor  *zone14_binary_sensor) { zone14_binary_sensor_ = zone14_binary_sensor; }
+      void set_zone15_binary_sensor(binary_sensor::BinarySensor  *zone15_binary_sensor) { zone15_binary_sensor_ = zone15_binary_sensor; }
+      void set_zone16_binary_sensor(binary_sensor::BinarySensor  *zone16_binary_sensor) { zone16_binary_sensor_ = zone16_binary_sensor; }
 
       void set_keypad_text_sensor(text_sensor::TextSensor  *keypad_text_sensor) { keypad_text_sensor_ = keypad_text_sensor; }
       void set_status_text_sensor(text_sensor::TextSensor  *status_text_sensor) { status_text_sensor_ = status_text_sensor; }
@@ -215,6 +244,8 @@ namespace esphome
       binary_sensor::BinarySensor *battery_binary_sensor_{nullptr};
       binary_sensor::BinarySensor *zonea_binary_sensor_{nullptr};
       binary_sensor::BinarySensor *zoneb_binary_sensor_{nullptr};
+      binary_sensor::BinarySensor *zonec_binary_sensor_{nullptr};
+      binary_sensor::BinarySensor *zoned_binary_sensor_{nullptr};
 
       binary_sensor::BinarySensor *beep1_binary_sensor_{nullptr};
       binary_sensor::BinarySensor *beep3_binary_sensor_{nullptr};
@@ -227,6 +258,14 @@ namespace esphome
       binary_sensor::BinarySensor *zone6_binary_sensor_{nullptr};
       binary_sensor::BinarySensor *zone7_binary_sensor_{nullptr};
       binary_sensor::BinarySensor *zone8_binary_sensor_{nullptr};
+      binary_sensor::BinarySensor *zone9_binary_sensor_{nullptr};
+      binary_sensor::BinarySensor *zone10_binary_sensor_{nullptr};
+      binary_sensor::BinarySensor *zone11_binary_sensor_{nullptr};
+      binary_sensor::BinarySensor *zone12_binary_sensor_{nullptr};
+      binary_sensor::BinarySensor *zone13_binary_sensor_{nullptr};
+      binary_sensor::BinarySensor *zone14_binary_sensor_{nullptr};
+      binary_sensor::BinarySensor *zone15_binary_sensor_{nullptr};
+      binary_sensor::BinarySensor *zone16_binary_sensor_{nullptr};
 
       text_sensor::TextSensor *keypad_text_sensor_{nullptr};
       text_sensor::TextSensor *status_text_sensor_{nullptr};

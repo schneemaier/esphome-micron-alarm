@@ -373,6 +373,12 @@ namespace esphome
         if (this->zoneb_binary_sensor_) {
           this->zoneb_binary_sensor_->publish_state((this->store_.status & MICRON_ZONE_B_MASK) == MICRON_ZONE_B_MASK);
         }
+        if (this->zonec_binary_sensor_) {
+          this->zonec_binary_sensor_->publish_state((this->store_.status & MICRON_ZONE_C_MASK) == MICRON_ZONE_C_MASK);
+        }
+        if (this->zoned_binary_sensor_) {
+          this->zoned_binary_sensor_->publish_state((this->store_.status & MICRON_ZONE_D_MASK) == MICRON_ZONE_D_MASK);
+        }
 
         if (this->beep1_binary_sensor_) {
           this->beep1_binary_sensor_->publish_state((this->store_.status & MICRON_KEY_BEEP_1_MASK) == MICRON_KEY_BEEP_1_MASK);
@@ -404,6 +410,30 @@ namespace esphome
         }
         if (this->zone8_binary_sensor_) {
           this->zone8_binary_sensor_->publish_state((this->store_.status & MICRON_ZONE_8_MASK) == MICRON_ZONE_8_MASK);
+        }
+        if (this->zone9_binary_sensor_) {
+          this->zone9_binary_sensor_->publish_state((this->store_.status & MICRON_ZONE_9_MASK) == MICRON_ZONE_9_MASK);
+        }
+        if (this->zone10_binary_sensor_) {
+          this->zone10_binary_sensor_->publish_state((this->store_.status & MICRON_ZONE_10_MASK) == MICRON_ZONE_10_MASK);
+        }
+        if (this->zone11_binary_sensor_) {
+          this->zone11_binary_sensor_->publish_state((this->store_.status & MICRON_ZONE_11_MASK) == MICRON_ZONE_11_MASK);
+        }
+        if (this->zone12_binary_sensor_) {
+          this->zone12_binary_sensor_->publish_state((this->store_.status & MICRON_ZONE_12_MASK) == MICRON_ZONE_12_MASK);
+        }
+        if (this->zone13_binary_sensor_) {
+          this->zone13_binary_sensor_->publish_state((this->store_.status & MICRON_ZONE_13_MASK) == MICRON_ZONE_13_MASK);
+        }
+        if (this->zone14_binary_sensor_) {
+          this->zone14_binary_sensor_->publish_state((this->store_.status & MICRON_ZONE_14_MASK) == MICRON_ZONE_14_MASK);
+        }
+        if (this->zone15_binary_sensor_) {
+          this->zone15_binary_sensor_->publish_state((this->store_.status & MICRON_ZONE_15_MASK) == MICRON_ZONE_15_MASK);
+        }
+        if (this->zone16_binary_sensor_) {
+          this->zone16_binary_sensor_->publish_state((this->store_.status & MICRON_ZONE_16_MASK) == MICRON_ZONE_16_MASK);
         }
 
         if (this->keypad_text_sensor_ && this->command_dedupe_.next(this->store_.command) && this->store_.command != 0x00) {
