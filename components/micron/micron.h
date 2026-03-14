@@ -5,6 +5,7 @@
 #include "esphome/components/text_sensor/text_sensor.h"
 #include "esphome/core/hal.h"
 #include "esphome/core/helpers.h"
+#include <queue>
 
 namespace esphome
 {
@@ -53,40 +54,44 @@ namespace esphome
     std::vector<uint8_t> keys_to_commands(const std::string &keys);
 
     struct MicronPacket {
-      uint8_t command;
-      uint16_t status;
+      uint8_t command = 0;
+      uint16_t status = 0;
     };
 
     class MicronDataProcessor {
     public:
+      MicronDataProcessor() : command_out(0), command_repeat(0), remaining_command_writes(0), num_bits_(0), prev_ms_(0) {
+        buffer_[0] = 0; buffer_[1] = 0; buffer_[2] = 0;
+      }
       void next(uint32_t ms);
       void write(ISRInternalGPIOPin *pin_data_out);
       bool decode(uint32_t ms, bool data);
-      MicronPacket *packet = new MicronPacket;
-      uint8_t command_out = 0;
-      uint8_t command_repeat = 0;
-      uint8_t remaining_command_writes = 0;
+      volatile MicronPacket packet;
+      volatile uint8_t command_out = 0;
+      volatile uint8_t command_repeat = 0;
+      volatile uint8_t remaining_command_writes = 0;
 
     protected:
-      uint8_t buffer_[MICRON_PACKET_LEN];
-      int num_bits_ = 0;
-      uint32_t prev_ms_;
+      volatile uint8_t buffer_[MICRON_PACKET_LEN];
+      volatile int num_bits_ = 0;
+      volatile uint32_t prev_ms_ = 0;
     };
 
     struct MicronStore {
     public:
-      uint8_t command;
-      uint16_t status;
+      MicronStore() : command(0), status(0), num_interrupts(0), bits_received(0), packet_interrupts(0), packet_bits(0), packets_received(0), packets_with_interference(0), commands_sent(0), last_packet_ms(0), last_interrupt_us_(0) {}
+      volatile uint8_t command = 0;
+      volatile uint16_t status = 0;
 
-      uint32_t interrupts = 0;
-      uint32_t bits_received = 0;
-      uint32_t packet_interrupts = 0;
-      uint32_t packet_bits = 0;
-      uint32_t packets_received = 0;
-      uint32_t packets_with_interference = 0;
-      uint32_t commands_sent = 0;
+      volatile uint32_t num_interrupts = 0;
+      volatile uint32_t bits_received = 0;
+      volatile uint32_t packet_interrupts = 0;
+      volatile uint32_t packet_bits = 0;
+      volatile uint32_t packets_received = 0;
+      volatile uint32_t packets_with_interference = 0;
+      volatile uint32_t commands_sent = 0;
 
-      uint32_t last_packet_ms;
+      volatile uint32_t last_packet_ms = 0;
 
       void setup(InternalGPIOPin *pin_clock, InternalGPIOPin *pin_data, InternalGPIOPin *pin_data_out);
       void write(uint8_t command, uint8_t repeat = 1);
@@ -98,9 +103,9 @@ namespace esphome
       ISRInternalGPIOPin pin_data_;
       ISRInternalGPIOPin pin_data_out_;
 
-      uint32_t last_interrupt_us_;
+      volatile uint32_t last_interrupt_us_ = 0;
 
-      void set_data_(MicronPacket *packet);
+      void set_data_(volatile MicronPacket *packet);
     };
 
     class MicronComponent : public PollingComponent
