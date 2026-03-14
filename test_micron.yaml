@@ -1,0 +1,28 @@
+esphome:
+  name: test-micron
+
+esp8266:
+  board: d1_mini
+
+external_components:
+  - source:
+      type: local
+      path: components
+
+micron:
+  clock_pin:
+    number: D1
+    inverted: true
+  data_in_pin:
+    number: D2
+    inverted: true
+  data_out_pin: D5
+  update_interval: 60s
+  connected:
+    name: "Alarm Connected"
+  m:
+    name: "Alarm M Indicator"
+  s1:
+    name: "Alarm S1 Indicator"
+  s2:
+    name: "Alarm S2 Indicator"

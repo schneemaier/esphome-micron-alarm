@@ -90,8 +90,8 @@ namespace esphome
         // are we done yet?
         if (this->num_bits_ == MICRON_FRAME_SIZE) {
 
-          this->packet->command = this->buffer_[MICRON_BYTE_COMMAND] >> 1;
-          this->packet->status = this->buffer_[MICRON_BYTE_HIGH] << 8 | this->buffer_[MICRON_BYTE_LOW];
+          this->packet.command = this->buffer_[MICRON_BYTE_COMMAND] >> 1;
+          this->packet.status = this->buffer_[MICRON_BYTE_HIGH] << 8 | this->buffer_[MICRON_BYTE_LOW];
 
           return true;
         }
@@ -119,7 +119,7 @@ namespace esphome
     }
 
     void IRAM_ATTR MicronStore::interrupt(MicronStore *arg) {
-      arg->interrupts++;
+      arg->num_interrupts++;
       arg->packet_interrupts++;
 
       uint32_t now_us = micros();
@@ -152,11 +152,11 @@ namespace esphome
         }
         arg->packet_interrupts = 0;
         arg->packet_bits = 0;
-        arg->set_data_(arg->processor_.packet);
+        arg->set_data_(&arg->processor_.packet);
       }
     }
 
-    void IRAM_ATTR MicronStore::set_data_(MicronPacket *packet) {
+    void IRAM_ATTR MicronStore::set_data_(volatile MicronPacket *packet) {
       this->command = packet->command;
       this->status = packet->status;
     }
@@ -271,7 +271,7 @@ namespace esphome
     void MicronComponent::update() {
       ESP_LOGD(TAG, "Command: 0x%02x,  Status: 0x%04x", this->store_.command, this->store_.status);
       ESP_LOGD(TAG, "Interrupts: %d, Bits: %d, Packets: %d, Packets Fixed: %d, Commands Sent: %d", 
-        this->store_.interrupts,
+        this->store_.num_interrupts,
         this->store_.bits_received, 
         this->store_.packets_received,
         this->store_.packets_with_interference,
