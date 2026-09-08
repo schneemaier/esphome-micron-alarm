@@ -205,7 +205,7 @@ namespace esphome
       void set_zone9_binary_sensor(binary_sensor::BinarySensor  *zone9_binary_sensor) { zone9_binary_sensor_ = zone9_binary_sensor; }
       void set_zone10_binary_sensor(binary_sensor::BinarySensor  *zone10_binary_sensor) { zone10_binary_sensor_ = zone10_binary_sensor; }
       void set_zone11_binary_sensor(binary_sensor::BinarySensor  *zone11_binary_sensor) { zone11_binary_sensor_ = zone11_binary_sensor; }
-      void set_zone12_binary_sensor(binary_sensor::BinarySensor  *zone12_binary_sensor) { zone12_binary_sensor_ = zone13_binary_sensor; }
+      void set_zone12_binary_sensor(binary_sensor::BinarySensor  *zone12_binary_sensor) { zone12_binary_sensor_ = zone12_binary_sensor; }
       void set_zone13_binary_sensor(binary_sensor::BinarySensor  *zone13_binary_sensor) { zone13_binary_sensor_ = zone13_binary_sensor; }
       void set_zone14_binary_sensor(binary_sensor::BinarySensor  *zone14_binary_sensor) { zone14_binary_sensor_ = zone14_binary_sensor; }
       void set_zone15_binary_sensor(binary_sensor::BinarySensor  *zone15_binary_sensor) { zone15_binary_sensor_ = zone15_binary_sensor; }
