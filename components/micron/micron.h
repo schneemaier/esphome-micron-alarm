@@ -84,15 +84,15 @@ namespace esphome
     static const uint32_t MICRON_ZONE_13_MASK = 0x0010;
     static const uint32_t MICRON_ZONE_14_MASK = 0x0020;
     static const uint32_t MICRON_ZONE_C_MASK = 0x0040;
-    static const uint32_t MICRON_KEY_BEEP_3_MASK = 0x0080;ZONE_C
+    static const uint32_t MICRON_KEY_BEEP_4_MASK = 0x0080;
     static const uint32_t MICRON_ZONE_15_MASK = 0x0100;
     static const uint32_t MICRON_ZONE_16_MASK = 0x0200;
-    static const uint32_t MICRON_NIGHT_ARMED_MASK = 0x0400;
-    static const uint32_t MICRON_0800_MASK = 0x0800;
-    static const uint32_t MICRON_BATTERY_MASK = 0x1000;
-    static const uint32_t MICRON_M_MASK = 0x2000;
+    static const uint32_t MICRON_NIGHT_ARMED2_MASK = 0x0400;
+    static const uint32_t MICRON_08002_MASK = 0x0800;
+    static const uint32_t MICRON_BATTERY2_MASK = 0x1000;
+    static const uint32_t MICRON_M2_MASK = 0x2000;
     static const uint32_t MICRON_ZONE_D_MASK = 0x4000;
-    static const uint32_t MICRON_KEY_BEEP_1_MASK = 0x8000;
+    static const uint32_t MICRON_KEY_BEEP_5_MASK = 0x8000;
 
     static const uint16_t MICRON_SIREN_MASK = 0x0001;
 
