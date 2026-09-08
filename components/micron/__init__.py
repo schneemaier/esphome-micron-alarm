@@ -13,7 +13,38 @@ from esphome.const import (
     CONF_CLOCK_PIN,
     CONF_DATA_PIN,
     DEVICE_CLASS_OCCUPANCY,
-    DEVICE_CLASS_POWER,
+    DEVICE_CLASS_POWER,            cv.Optional(CONF_ZONE_1): binary_sensor.binary_sensor_schema(
+                device_class = DEVICE_CLASS_OCCUPANCY,
+                entity_category=ENTITY_CATEGORY_DIAGNOSTIC,
+            ),
+            cv.Optional(CONF_ZONE_2): binary_sensor.binary_sensor_schema(
+                device_class = DEVICE_CLASS_OCCUPANCY,
+                entity_category=ENTITY_CATEGORY_DIAGNOSTIC,
+            ),
+            cv.Optional(CONF_ZONE_3): binary_sensor.binary_sensor_schema(
+                device_class = DEVICE_CLASS_OCCUPANCY,
+                entity_category=ENTITY_CATEGORY_DIAGNOSTIC,
+            ),
+            cv.Optional(CONF_ZONE_4): binary_sensor.binary_sensor_schema(
+                device_class = DEVICE_CLASS_OCCUPANCY,
+                entity_category=ENTITY_CATEGORY_DIAGNOSTIC,
+            ),
+            cv.Optional(CONF_ZONE_5): binary_sensor.binary_sensor_schema(
+                device_class = DEVICE_CLASS_OCCUPANCY,
+                entity_category=ENTITY_CATEGORY_DIAGNOSTIC,
+            ),
+            cv.Optional(CONF_ZONE_6): binary_sensor.binary_sensor_schema(
+                device_class = DEVICE_CLASS_OCCUPANCY,
+                entity_category=ENTITY_CATEGORY_DIAGNOSTIC,
+            ),
+            cv.Optional(CONF_ZONE_7): binary_sensor.binary_sensor_schema(
+                device_class = DEVICE_CLASS_OCCUPANCY,
+                entity_category=ENTITY_CATEGORY_DIAGNOSTIC,
+            ),
+            cv.Optional(CONF_ZONE_8): binary_sensor.binary_sensor_schema(
+                device_class = DEVICE_CLASS_OCCUPANCY,
+                entity_category=ENTITY_CATEGORY_DIAGNOSTIC,
+            ),
     DEVICE_CLASS_PROBLEM,
     DEVICE_CLASS_SOUND,
     DEVICE_CLASS_CONNECTIVITY,
@@ -47,7 +78,7 @@ CONF_M = "m"
 CONF_BATTERY = "battery"
 CONF_ZONE_A = "zoneA"
 CONF_ZONE_B = "zoneB"
-CONF_ZONE_c = "zoneC"
+CONF_ZONE_C = "zoneC"
 CONF_ZONE_D = "zoneD"
 CONF_BEEP_1 = "beep1"
 CONF_BEEP_2 = "beep2"
