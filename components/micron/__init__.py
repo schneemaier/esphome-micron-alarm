@@ -47,6 +47,8 @@ CONF_M = "m"
 CONF_BATTERY = "battery"
 CONF_ZONE_A = "zoneA"
 CONF_ZONE_B = "zoneB"
+CONF_ZONE_c = "zoneC"
+CONF_ZONE_D = "zoneD"
 CONF_BEEP_1 = "beep1"
 CONF_BEEP_2 = "beep2"
 CONF_BEEP_3 = "beep3"
@@ -59,6 +61,15 @@ CONF_ZONE_5 = "zone5"
 CONF_ZONE_6 = "zone6"
 CONF_ZONE_7 = "zone7"
 CONF_ZONE_8 = "zone8"
+
+CONF_ZONE_9 = "zone9"
+CONF_ZONE_10 = "zone10"
+CONF_ZONE_11 = "zone11"
+CONF_ZONE_12 = "zone12"
+CONF_ZONE_13 = "zone13"
+CONF_ZONE_14 = "zone14"
+CONF_ZONE_15 = "zone15"
+CONF_ZONE_16 = "zone16"
 
 CONF_KEYPAD = "keypad"
 CONF_STATUS = "status"
@@ -91,6 +102,12 @@ CONFIG_SCHEMA = cv.All(
                 entity_category=ENTITY_CATEGORY_DIAGNOSTIC,
             ),
             cv.Optional(CONF_ZONE_B): binary_sensor.binary_sensor_schema(
+                entity_category=ENTITY_CATEGORY_DIAGNOSTIC,
+            ),
+            cv.Optional(CONF_ZONE_C): binary_sensor.binary_sensor_schema(
+                entity_category=ENTITY_CATEGORY_DIAGNOSTIC,
+            ),
+            cv.Optional(CONF_ZONE_D): binary_sensor.binary_sensor_schema(
                 entity_category=ENTITY_CATEGORY_DIAGNOSTIC,
             ),
             cv.Optional(CONF_BEEP_1): binary_sensor.binary_sensor_schema(
@@ -136,7 +153,38 @@ CONFIG_SCHEMA = cv.All(
                 device_class = DEVICE_CLASS_OCCUPANCY,
                 entity_category=ENTITY_CATEGORY_DIAGNOSTIC,
             ),
-            cv.Optional(CONF_KEYPAD): text_sensor.text_sensor_schema(
+            cv.Optional(CONF_ZONE_9): binary_sensor.binary_sensor_schema(
+                device_class = DEVICE_CLASS_OCCUPANCY,
+                entity_category=ENTITY_CATEGORY_DIAGNOSTIC,
+            ),
+            cv.Optional(CONF_ZONE_10): binary_sensor.binary_sensor_schema(
+                device_class = DEVICE_CLASS_OCCUPANCY,
+                entity_category=ENTITY_CATEGORY_DIAGNOSTIC,
+            ),
+            cv.Optional(CONF_ZONE_11): binary_sensor.binary_sensor_schema(
+                device_class = DEVICE_CLASS_OCCUPANCY,
+                entity_category=ENTITY_CATEGORY_DIAGNOSTIC,
+            ),
+            cv.Optional(CONF_ZONE_12): binary_sensor.binary_sensor_schema(
+                device_class = DEVICE_CLASS_OCCUPANCY,
+                entity_category=ENTITY_CATEGORY_DIAGNOSTIC,
+            ),
+            cv.Optional(CONF_ZONE_13): binary_sensor.binary_sensor_schema(
+                device_class = DEVICE_CLASS_OCCUPANCY,
+                entity_category=ENTITY_CATEGORY_DIAGNOSTIC,
+            ),
+            cv.Optional(CONF_ZONE_14): binary_sensor.binary_sensor_schema(
+                device_class = DEVICE_CLASS_OCCUPANCY,
+                entity_category=ENTITY_CATEGORY_DIAGNOSTIC,
+            ),
+            cv.Optional(CONF_ZONE_15): binary_sensor.binary_sensor_schema(
+                device_class = DEVICE_CLASS_OCCUPANCY,
+                entity_category=ENTITY_CATEGORY_DIAGNOSTIC,
+            ),
+            cv.Optional(CONF_ZONE_16): binary_sensor.binary_sensor_schema(
+                device_class = DEVICE_CLASS_OCCUPANCY,
+                entity_category=ENTITY_CATEGORY_DIAGNOSTIC,
+            ),            cv.Optional(CONF_KEYPAD): text_sensor.text_sensor_schema(
                 entity_category=ENTITY_CATEGORY_DIAGNOSTIC,
                 icon="mdi:dialpad"
             ),
