@@ -5,7 +5,7 @@
 #include "esphome/components/text_sensor/text_sensor.h"
 #include "esphome/core/hal.h"
 #include "esphome/core/helpers.h"
-#include "queue.h"
+#include <queue>
 
 namespace esphome
 {
