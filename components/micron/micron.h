@@ -20,6 +20,7 @@ namespace esphome
     static const uint32_t MICRON_MIN_US = 20; // originally it was 100;
     static const uint32_t MICRON_MAX_MS = 18; // originally it was 30
     
+    // Default packet length
     static const uint8_t MICRON_PACKET_LEN = 5; //was 3 but changed to 5 to support 16 zone version
     // Frame and packet length size is different for the 8 and 16 Zone versions
     static const uint8_t MICRON_FRAME_SIZE_8ZONE = 24;
@@ -83,7 +84,7 @@ namespace esphome
     static const uint32_t MICRON_ZONE_13_MASK = 0x0010;
     static const uint32_t MICRON_ZONE_14_MASK = 0x0020;
     static const uint32_t MICRON_ZONE_C_MASK = 0x0040;
-    static const uint32_t MICRON_KEY_BEEP_3_MASK = 0x0080;
+    static const uint32_t MICRON_KEY_BEEP_3_MASK = 0x0080;ZONE_C
     static const uint32_t MICRON_ZONE_15_MASK = 0x0100;
     static const uint32_t MICRON_ZONE_16_MASK = 0x0200;
     static const uint32_t MICRON_NIGHT_ARMED_MASK = 0x0400;

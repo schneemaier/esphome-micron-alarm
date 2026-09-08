@@ -100,8 +100,11 @@ micron:
   clock_pin:
     number: D1
     inverted: true
+  clock_pin2:
+    number: D1
+    inverted: true
   data_in_pin: 
-    number: D2
+    number: D7
     inverted: true
   data_out_pin: D5
   update_interval: 300s

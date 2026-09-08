@@ -142,6 +142,7 @@ namespace esphome
     }
 
     void IRAM_ATTR MicronStore::interruptID(MicronStore *arg) {
+      // This is to idenitfy the Micro alarm zone number
       uint32_t now_us = micros();
       //bool clock_bit = arg->pin_clock_.digital_read();
       if ((now_us - arg->last_interrupt_us_) < MICRON_MIN_US) {
