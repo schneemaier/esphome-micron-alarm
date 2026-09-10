@@ -150,7 +150,7 @@ namespace esphome
         // this is caused by us sending command back to the panel,
         // which seems to cause and issue on the clock line
         return;
-      }interruptID
+      }
       ESP_LOGD(TAG, "Clock bit: %d", arg->id_clock_count);
       arg->id_clock_count++;
       //ESP_LOGD(TAG, "now: %d, last: %d, max: %d", now_us, arg->last_interrupt_us_, MICRON_MAX_MS * 1000);
