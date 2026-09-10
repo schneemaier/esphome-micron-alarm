@@ -151,7 +151,7 @@ namespace esphome
         // which seems to cause and issue on the clock line
         return;
       }
-      // ESP_LOGD(TAG, "Clock bit: %d", clock_bit);
+      ESP_LOGD(TAG, "Clock bit: %d", clock_bit);
       arg->id_clock_count++;
       //ESP_LOGD(TAG, "now: %d, last: %d, max: %d", now_us, arg->last_interrupt_us_, MICRON_MAX_MS * 1000);
       if ((now_us - arg->last_interrupt_us_)  > (MICRON_MAX_MS * 1000)) {
@@ -346,6 +346,14 @@ namespace esphome
       LOG_BINARY_SENSOR("  ", "Zone 6", this->zone6_binary_sensor_);
       LOG_BINARY_SENSOR("  ", "Zone 7", this->zone7_binary_sensor_);
       LOG_BINARY_SENSOR("  ", "Zone 8", this->zone8_binary_sensor_);
+      LOG_BINARY_SENSOR("  ", "Zone 9", this->zone1_binary_sensor_);
+      LOG_BINARY_SENSOR("  ", "Zone 10", this->zone10_binary_sensor_);
+      LOG_BINARY_SENSOR("  ", "Zone 11", this->zone11_binary_sensor_);
+      LOG_BINARY_SENSOR("  ", "Zone 12", this->zone12_binary_sensor_);
+      LOG_BINARY_SENSOR("  ", "Zone 13", this->zone13_binary_sensor_);
+      LOG_BINARY_SENSOR("  ", "Zone 14", this->zone14_binary_sensor_);
+      LOG_BINARY_SENSOR("  ", "Zone 15", this->zone15_binary_sensor_);
+      LOG_BINARY_SENSOR("  ", "Zone 16", this->zone16_binary_sensor_);
     }
 
     void MicronComponent::loop() {
@@ -353,7 +361,7 @@ namespace esphome
       if (this->store_.alarm_board_type == MICRON_TYPE_UNKNOWN) {
         ESP_LOGCONFIG(TAG, "Board not yet ID....");
         // setup falling edge interrupt
-        this->store_.setupFall(this->pin_clock_);
+        //this->store_.setupFall(this->pin_clock_);
       }
       else {
         //ESP_LOGCONFIG(TAG, "Board ID!");
