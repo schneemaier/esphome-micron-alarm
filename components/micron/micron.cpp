@@ -151,7 +151,7 @@ namespace esphome
         // which seems to cause and issue on the clock line
         return;
       }
-      ESP_LOGD(TAG, "Clock bit: %d", arg->id_clock_count);
+      ESP_LOGD(TAG, "Clock bit: %d Cycle: %d", arg->id_clock_count, arg->id_cycle_count);
       arg->id_clock_count++;
       //ESP_LOGD(TAG, "now: %d, last: %d, max: %d", now_us, arg->last_interrupt_us_, MICRON_MAX_MS * 1000);
       if ((now_us - arg->last_interrupt_us_)  > (MICRON_MAX_MS * 1000)) {
